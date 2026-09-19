@@ -1,0 +1,1 @@
+HDB Participant v7.0.0: same-device rule; repeated same-day sessions preserved; Blood retired; Memory exploratory; frozen baseline unchanged.
