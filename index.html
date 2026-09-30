@@ -998,6 +998,7 @@ input:focus,select:focus,textarea:focus{border-color:#53a69c!important;box-shado
 input[type="checkbox"],input[type="radio"]{accent-color:var(--rc40-teal);width:18px!important;height:18px!important;min-height:0!important;box-shadow:none!important}
 select{background-image:linear-gradient(45deg,transparent 50%,#688078 50%),linear-gradient(135deg,#688078 50%,transparent 50%)!important;background-position:calc(100% - 16px) 52%,calc(100% - 11px) 52%!important;background-size:5px 5px,5px 5px!important;background-repeat:no-repeat!important;padding-right:34px!important;appearance:none;-webkit-appearance:none}
 textarea{line-height:1.55}
+
 /* Generic workspace cards */
 section:not(#about):not(#home){border-color:var(--rc40-line)!important;border-radius:22px!important;box-shadow:var(--rc40-shadow-md)!important}
 section:not(#about):not(#home):before{pointer-events:none}
@@ -1996,7 +1997,8 @@ ferritin | ng/mL | 20 | 200" rows="4" style="width:100%;box-sizing:border-box;fo
 <div class="metric">Tapping destra / sinistra<b id="r_tap_lr">—</b><small>tocchi/s</small></div>
 <div class="metric">Variabilità del timing<b id="r_tap_cv">—</b><small>CV medio inter-tap</small></div>
 <div class="metric">Asimmetria di frequenza<b id="r_tap_asym">—</b><small>|D−S| / lato più rapido</small></div><div class="metric">Variazione tra le due metà<b id="r_tap_half">—</b><small>secondi 7,5 s vs primi 7,5 s</small></div>
-<div class="metric">Pause/esitazioni proxy (ITI lungo)<b id="r_tap_pause">—</b><small>eventi ITI lunghi D / S</small></div><div class="metric">Trend progressivo della velocità<b id="r_tap_slope">—</b><small>pendenza D / S per finestre di 3 s</small></div>
+<div class="metric">Pause/esitazioni proxy (ITI lungo)<b id="r_tap_pause">—</b><small>eventi ITI lunghi D / S</small></div>
+<div class="metric">Trend progressivo della velocità<b id="r_tap_slope">—</b><small>pendenza D / S per finestre di 3 s</small></div>
 <div class="metric">Ampiezza movimento video D / S<b id="r_vtap_amp">—</b><small>escursione normalizzata</small></div><div class="metric">Decremento ampiezza video D / S<b id="r_vtap_dec">—</b><small>positivo = apertura finale minore</small></div><div class="metric">Qualità tracking video<b id="r_vtap_quality">—</b><small>canale esplorativo</small></div><div class="metric">Accuratezza Go/No-Go<b id="r_gg">—</b></div><div class="metric">Mediana RT Go<b id="r_ggrt">—</b></div>
 </div><button class="alt" onclick="exportCSV()">ESPORTA DATI RAW</button><button class="alt" onclick="openHome()">RACCOLTA DATI</button></section>
 </div></main><script data-inlined-from="js/01-const-x-document-getelementbyid-x-hideall-document-q.js">
@@ -2995,7 +2997,8 @@ function drawLineChart(id,labels,values,opts={}){
    let n=full.length;if(!n){drawLineChartFrame(id,labels,full,opts);return}
    let pos=eased*Math.max(0,n-1),whole=Math.floor(pos),frac=pos-whole;
    let shown=full.map((v,i)=>i<=whole?v:NaN);
-   if(whole<n-1&&Number.isFinite(full[whole])&&Number.isFinite(full[whole+1]))shown[whole+1]=full[whole]+(full[whole+1]-full[whole])*frac;   drawLineChartFrame(id,labels,shown,{...opts,_animating:t<1});
+   if(whole<n-1&&Number.isFinite(full[whole])&&Number.isFinite(full[whole+1]))shown[whole+1]=full[whole]+(full[whole+1]-full[whole])*frac;
+   drawLineChartFrame(id,labels,shown,{...opts,_animating:t<1});
    if(t<1)c._ndbAnim=requestAnimationFrame(tick);
    else {c._ndbAnim=null;drawLineChartFrame(id,labels,full,opts)}
  }
@@ -3994,7 +3997,8 @@ function form(){
  return ids.map((id,i)=>({...stimulusMeta(id),word:words[w[i%w.length]],place:places[pl[i%pl.length]],exposure_count_before:0}));
 }
 let epi=null,epiI=0;
-function epiHome(){ let pending=load(K_EPI).filter(x=>x.phase==="learned"||x.phase==="recalled20m"),used=new Set(load(K_EPI_HIST).map(x=>x.stimulus_id)).size,remaining=Math.max(0,720-used);
+function epiHome(){
+ let pending=load(K_EPI).filter(x=>x.phase==="learned"||x.phase==="recalled20m"),used=new Set(load(K_EPI_HIST).map(x=>x.stimulus_id)).size,remaining=Math.max(0,720-used);
  $v("epiBody").innerHTML=`<div class="v71grid"><button onclick="NDBv71.epiStart()">NUOVA SESSIONE DI APPRENDIMENTO</button><button class="alt" onclick="NDBv71.epiRecall('20m')">RICHIAMO 20–30 MIN</button><button class="alt" onclick="NDBv71.epiRecall('nextday')">RICHIAMO GIORNO DOPO</button></div>
  <p class="note">${pending.length} sessione/i disponibili per richiamo · <b>${remaining}/720 stimoli mai visti ancora disponibili</b>. Ogni nuovo apprendimento usa 6 immagini mai mostrate prima; uno stimolo esposto non viene riutilizzato, anche se la sessione viene interrotta. Il richiamo della stessa sessione usa invece intenzionalmente le stesse immagini.</p>`;
 }
@@ -4993,7 +4997,8 @@ function localMaxIndex(grid,a,b){let bi=-1,bv=-Infinity;for(let i=Math.max(0,a);
 function localMinIndex(grid,a,b){let bi=-1,bv=Infinity;for(let i=Math.max(0,a);i<=Math.min(grid.length-1,b);i++){const v=grid[i].opening_s;if(finite(v)&&v<bv){bv=v;bi=i}}return bi}
 function detectCycles(raw,cal=null,expectedSide=side,expectedDurationMs=DURATION){
  const pre=preprocess(raw,expectedDurationMs),g=pre.grid;if(g.length<8)return{accepted:[],rejected:[],candidates:[],pre,period:null,recovered:0,method:'hysteresis+extrema_v10'};
- const series=g.map(r=>r.opening_s).filter(finite),trialOpen=quant(series,.88),trialClose=quant(series,.12),calOpen=Number(cal?.open_reference_norm),calClose=Number(cal?.closed_reference_norm), openRef=finite(calOpen)?(.65*calOpen+.35*trialOpen):trialOpen,closeRef=finite(calClose)?(.65*calClose+.35*trialClose):trialClose,range=Math.max(.008,Number(openRef)-Number(closeRef)),
+ const series=g.map(r=>r.opening_s).filter(finite),trialOpen=quant(series,.88),trialClose=quant(series,.12),calOpen=Number(cal?.open_reference_norm),calClose=Number(cal?.closed_reference_norm),
+ openRef=finite(calOpen)?(.65*calOpen+.35*trialOpen):trialOpen,closeRef=finite(calClose)?(.65*calClose+.35*trialClose):trialClose,range=Math.max(.008,Number(openRef)-Number(closeRef)),
  closeTh=finite(cal?.close_threshold_norm)?(.7*Number(cal.close_threshold_norm)+.3*(Number(closeRef)+.34*range)):Number(closeRef)+.34*range,
  openTh=finite(cal?.open_threshold_norm)?(.7*Number(cal.open_threshold_norm)+.3*(Number(closeRef)+.68*range)):Number(closeRef)+.68*range;
  const residual=[];for(const q of pre.rows){if(finite(q.opening)){const near=g.reduce((best,r)=>Math.abs(r.t-q.t)<Math.abs(best.t-q.t)?r:best,g[0]);if(finite(near?.opening_s))residual.push(Number(q.opening)-Number(near.opening_s))}}
@@ -5992,7 +5997,8 @@ const SCENES=[
  {id:"parco",label:"parco",motif:"🌳",sky:"#c6e7f9",ground:"#8dbf75",accent:"#3d7248"},
  {id:"salotto",label:"salotto",motif:"🛋️",sky:"#e5d0bd",ground:"#b48667",accent:"#6c493c"},
  {id:"porto",label:"porto",motif:"⚓",sky:"#a9d8ec",ground:"#4b91ad",accent:"#1c5d78"},
- {id:"mercato",label:"mercato",motif:"🧺",sky:"#f6d997",ground:"#c58f54",accent:"#84522e"}, {id:"officina",label:"officina",motif:"🛠️",sky:"#c8d0d5",ground:"#78848b",accent:"#394852"},
+ {id:"mercato",label:"mercato",motif:"🧺",sky:"#f6d997",ground:"#c58f54",accent:"#84522e"},
+ {id:"officina",label:"officina",motif:"🛠️",sky:"#c8d0d5",ground:"#78848b",accent:"#394852"},
  {id:"museo",label:"museo",motif:"🖼️",sky:"#e7ded0",ground:"#af9b80",accent:"#695d50"},
  {id:"teatro",label:"teatro",motif:"🎭",sky:"#d6b3b3",ground:"#8f5055",accent:"#5b2730"},
  {id:"campeggio",label:"campeggio",motif:"⛺",sky:"#b8d9e6",ground:"#8dae68",accent:"#4a6945"},
@@ -6991,7 +6997,8 @@ function buildSpeechPending(task,metrics,extra={}){
  const b=E('ndbSpeechBody'),q=`${task==='reading'?'Lettura':task==='pata'?'PATA':'Vocale'} completato · familiarizzazione ${Math.min(f.index,4)}/4${f.active?' (esclusa dalla baseline)':' · baseline-eligible'}`;
  b.innerHTML=`<h3>${q}</h3><div class="ndb-speech-note">Qualità tecnica · SNR proxy <b>${Number.isFinite(metrics.snr_proxy_db)?metrics.snr_proxy_db.toFixed(1)+' dB':'—'}</b> · clipping <b>${Number.isFinite(metrics.clipping_pct)?metrics.clipping_pct.toFixed(2)+'%':'—'}</b>. Nessun audio grezzo viene salvato.</div><div class="ndb-speech-actions"><button id="ndbSpeechSaveContinue">${speechQueue.length?'SALVA E CONTINUA':'SALVA E TERMINA'}</button><button class="alt" id="ndbSpeechSaveExit">ESCI E SALVA</button><button class="alt" id="ndbSpeechDiscard">ESCI E NON SALVARE</button></div>`;
  let saving=false;
- const savePending=async(next)=>{  if(saving||!pendingSpeech)return;saving=true;
+ const savePending=async(next)=>{
+  if(saving||!pendingSpeech)return;saving=true;
   try{const row=pendingSpeech,a=read(SPEECH_KEY),i=a.findIndex(x=>x?.id===row.id);if(i<0)a.push(row);else a[i]=row;write(SPEECH_KEY,a);pendingSpeech=null;cloudPush(SPEECH_KEY);next()}
   catch(e){const n=document.createElement('p');n.setAttribute('role','alert');n.textContent='Salvataggio non riuscito: '+e.message+'. Riprova: il risultato è ancora disponibile.';E('ndbSpeechBody').appendChild(n)}
   finally{saving=false}
@@ -7990,7 +7997,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  function polish(){
   try{
    // Accessible names/label associations without altering data flow.
-   document.querySelectorAll('label:not([for])').forEach(function(l){    if(l.querySelector('input,select,textarea')) return;
+   document.querySelectorAll('label:not([for])').forEach(function(l){
+    if(l.querySelector('input,select,textarea')) return;
     var n=l.nextElementSibling;
     if(n && /^(INPUT|SELECT|TEXTAREA)$/.test(n.tagName) && n.id) l.setAttribute('for',n.id);
    });
@@ -8989,7 +8997,8 @@ const GROUPS={
  tremor_ai:{label:'Tremor / Fine Motor AI',keys:['NDB_tremor_finemotor_sessions']},
  blood:{label:'Laboratorio',keys:['NDB_blood_log']},
  cognitive:{label:'Cognizione / tapping / Video Tapping',keys:['NDB_cognitive_sessions','NDB_last_session']},
- episodic:{label:'Memoria episodica',keys:['NDB_episodic_sessions','NDB_episodic_stimulus_history']}, visual:{label:'Visuospatial + Fluctuation',keys:['NDB_visual_sessions']},
+ episodic:{label:'Memoria episodica',keys:['NDB_episodic_sessions','NDB_episodic_stimulus_history']},
+ visual:{label:'Visuospatial + Fluctuation',keys:['NDB_visual_sessions']},
  gait:{label:'Gait',keys:['NDB_gait_sessions']},
  face:{label:'Facial Motor AI',keys:['NDB_facial_sessions']},
  trace:{label:'Continuous Tracing',keys:['NDB_trace_sessions']},
