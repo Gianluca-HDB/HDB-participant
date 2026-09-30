@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="it"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" name="viewport"/><meta content="#f5f5f7" name="theme-color"/><meta name="ndb-release" content="RC108"><title>Neuro Digital Baseline</title>
+<html lang="it"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" name="viewport"/><meta content="#f5f5f7" name="theme-color"/><meta name="ndb-release" content="RC110"><title>Neuro Digital Baseline</title>
 <style data-inlined-from="css/01-style.css">*{box-sizing:border-box}body{margin:0;background:#f5f5f7;color:#111;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:720px;margin:auto;min-height:100vh;padding:24px}.card{background:#fff;border-radius:26px;padding:26px;box-shadow:0 12px 40px #00000010}h1{font-size:34px;margin:0}.eyebrow{font-size:13px;letter-spacing:.12em;color:#666;font-weight:700}.sub{color:#666;margin:6px 0 24px}button{width:100%;padding:16px;border:0;border-radius:16px;font-size:18px;font-weight:700;background:#111;color:#fff}button.alt{background:#eee;color:#111;margin-top:10px}.arena{height:360px;border-radius:22px;background:#eee;display:grid;place-items:center;text-align:center;touch-action:manipulation;user-select:none}.dot{width:120px;height:120px;background:#111;border-radius:50%}.big{font-size:34px;font-weight:800}.muted{color:#666}.hidden{display:none!important}.progress{margin:0 0 12px;color:#666}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:#f3f3f3;padding:15px;border-radius:16px}.metric b{display:block;font-size:24px;margin-top:4px}.note{font-size:13px;line-height:1.45;color:#666;margin-top:18px}input,select,textarea{width:100%;font-size:18px;padding:13px;border:1px solid #ccc;border-radius:13px;margin:7px 0 18px;background:#fff}
 .senior{font-size:20px}.senior h1{font-size:42px}.senior button{font-size:22px;padding:20px}.senior input,.senior select,.senior textarea{font-size:22px;padding:16px}
 .badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#eee;font-size:12px;font-weight:700;margin:3px 4px 3px 0}
@@ -3581,7 +3581,7 @@ function finish(){
     gonogo_trials:(data.gonogo||[]).map(x=>({...x}))
   }:null,
   form_id:sessionMode==="tapping_touch"?"TAP:v10.2-touchscreen-bilateral15s-countdown3s":
-          sessionMode==="tapping_video"?"TAPVIDEO:v16.1-rc102-robust-period-noise":
+          sessionMode==="tapping_video"?"TAPVIDEO:v17.0-rc110-hysteresis-observed-cycles":
           `COG:v12.0|MODE:${sessionMode}|RT20_TIMEOUT1500|GG24_SDT:${ggRule?ggRule.go+">"+ggRule.nogo:""}`,
   app_version:"NDB-RC105",qa_mode:isQAMode()
  };
@@ -4819,7 +4819,7 @@ window.NDBFrameStore={put,get,remove,clear,list,db:DB,store:STORE};
    No Watchdog and no classifier-confidence veto. Raw video is never stored. */
 const NDBVideoTapping=(()=>{
 'use strict';
-const PROTOCOL='NDB-VIDEO-TAPPING:v9.1-rc102-robust-period-noise';
+const PROTOCOL='NDB-VIDEO-TAPPING:v10.0-rc110-hysteresis-observed-cycles';
 const DURATION=15000,CAL_MS=7000;
 const E=id=>document.getElementById(id);
 const finite=v=>v!==null&&v!==undefined&&v!==''&&typeof v!=='boolean'&&Number.isFinite(Number(v));
@@ -4834,7 +4834,14 @@ const angle=(a,b,c,aspect=1)=>{if(!a||!b||!c)return null;const P=x=>[x.x*aspect,
 const physicalHand=label=>{const s=String(label||'').toLowerCase();return s==='left'?'right':s==='right'?'left':null};
 let stream=null,hands=null,looping=false,busy=false,raf=0,vfc=0,pendingFrameAt=0,lastSourceTime=NaN,lastCenter=null,side='right',cameraSettings={},activeCapture=null,sideCalibration={right:null,left:null},sideResults={right:null,left:null},handErrors=0,frameQueue=[],pendingJob=null,snapshotPending=0,queueSeq=0,queueEnabled=!!window.createImageBitmap,landmarkFilters={right:null,left:null};
 
-function draw(lm){const c=E('vtapCanvas'),v=E('vtapVideo');if(!c||!v)return;const w=v.videoWidth||640,h=v.videoHeight||480;if(c.width!==w)c.width=w;if(c.height!==h)c.height=h;const x=c.getContext('2d');x.clearRect(0,0,w,h);if(!lm)return;x.strokeStyle='rgba(113,224,211,.95)';x.lineWidth=4;x.beginPath();x.moveTo(lm[4].x*w,lm[4].y*h);x.lineTo(lm[8].x*w,lm[8].y*h);x.stroke();for(const i of [4,8]){x.fillStyle='#fff';x.beginPath();x.arc(lm[i].x*w,lm[i].y*h,5,0,Math.PI*2);x.fill()}}
+function draw(lm,info=null){
+ const c=E('vtapCanvas'),v=E('vtapVideo');if(!c||!v)return;const w=v.videoWidth||640,h=v.videoHeight||480;if(c.width!==w)c.width=w;if(c.height!==h)c.height=h;const x=c.getContext('2d');x.clearRect(0,0,w,h);if(!lm)return;
+ const edges=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+ x.strokeStyle='rgba(102,206,194,.72)';x.lineWidth=Math.max(1.5,w/420);for(const [a,b] of edges){x.beginPath();x.moveTo(lm[a].x*w,lm[a].y*h);x.lineTo(lm[b].x*w,lm[b].y*h);x.stroke()}
+ const contact=!!info?.contact;x.strokeStyle=contact?'#ffb84d':'#6fe0d3';x.lineWidth=Math.max(4,w/130);x.beginPath();x.moveTo(lm[4].x*w,lm[4].y*h);x.lineTo(lm[8].x*w,lm[8].y*h);x.stroke();
+ for(const i of [4,8]){x.fillStyle=contact?'#ffb84d':'#fff';x.beginPath();x.arc(lm[i].x*w,lm[i].y*h,Math.max(5,w/130),0,Math.PI*2);x.fill()}
+ if(info){x.font=`${Math.max(13,Math.round(w/45))}px system-ui`;x.fillStyle='rgba(5,30,27,.82)';x.fillRect(10,10,Math.min(w-20,310),52);x.fillStyle='#fff';x.fillText(`${String(info.side||'').toUpperCase()} · ${contact?'CONTATTO':'APERTO'} · d=${Number(info.opening||0).toFixed(3)}`,20,42)}
+}
 function isLive(){try{const t=stream?.getVideoTracks?.()[0];return !!(stream&&stream.active&&t&&t.readyState==='live')}catch(e){return false}}
 async function ensureCamera(){const v=E('vtapVideo');if(isLive()){if(v&&v.srcObject!==stream)v.srcObject=stream;try{await v?.play?.()}catch(e){}return true}try{stream?.getTracks?.().forEach(t=>t.stop())}catch(e){}stream=null;if(!window.NDBCameraHelper?.openBest)throw Error('Helper fotocamera non disponibile.');const cam=await window.NDBCameraHelper.openBest('vtapVideo');stream=cam.stream;cameraSettings=cam.settings||stream?.getVideoTracks?.()[0]?.getSettings?.()||{};if(v&&v.srcObject!==stream)v.srcObject=stream;try{await v?.play?.()}catch(e){}if(!isLive())throw Error('Fotocamera aperta ma traccia video non attiva.');E('vtapCameraBox')?.classList.add('ready');startLoop();return true}
 async function ensureHands(force=false){if(force&&hands){try{hands.close?.()}catch(e){}hands=null}if(hands)return;hands=new Hands({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/${f}`});hands.setOptions({maxNumHands:1,modelComplexity:1,minDetectionConfidence:.60,minTrackingConfidence:.60});hands.onResults(onResults);await new Promise(r=>setTimeout(r,80))}
@@ -4900,23 +4907,16 @@ async function enqueueCapturedFrame(now,meta){
  }catch(e){cap.snapshots_pending--;snapshotPending--;cap.software_dropped_frames++;console.warn('RC90 createImageBitmap failed',e)}
 }
 function rowFromLandmarks(lm,t,label,score,expected,latency,rawLm=null){
- const F=palmLocal21(lm),R=palmLocal21(rawLm||lm);if(!F)return null;const L=F.local,RL=R?.local||L,th=L[4],ix=L[8],opening=Math.hypot(ix.x-th.x,ix.y-th.y,ix.z-th.z),
- v=E('vtapVideo'),aspect=(v?.videoWidth||640)/(v?.videoHeight||480);
- return{t:+Number(t).toFixed(2),opening,palm:F.palm,local:L,raw_local:RL,thumb:th,index:ix,
-   index_mcp:angle(lm[0],lm[5],lm[6],aspect),index_pip:angle(lm[5],lm[6],lm[7],aspect),
-   index_dip:angle(lm[6],lm[7],lm[8],aspect),thumb_ip:angle(lm[2],lm[3],lm[4],aspect),
-   handedness:label,handedness_score:finite(score)?Number(score):null,hand_match:label===expected,
-   inference_latency_ms:finite(latency)?Number(latency):null,coordinate_frame:'palm_local_3d',temporal_filter:'one_euro_1.7_beta0.04'}
+ const F=palmLocal21(lm),R=palmLocal21(rawLm||lm);if(!F)return null;const L=F.local,RL=R?.local||L,th=L[4],ix=L[8],dx=ix.x-th.x,dy=ix.y-th.y,dz=ix.z-th.z,
+ opening2d=Math.hypot(dx,dy),opening3d=Math.hypot(dx,dy,dz),opening=Math.hypot(dx,dy,.35*dz),v=E('vtapVideo'),aspect=(v?.videoWidth||640)/(v?.videoHeight||480);
+ return{t:+Number(t).toFixed(2),opening,opening_2d:opening2d,opening_3d:opening3d,palm:F.palm,local:L,raw_local:RL,thumb:th,index:ix,
+   index_mcp:angle(lm[0],lm[5],lm[6],aspect),index_pip:angle(lm[5],lm[6],lm[7],aspect),index_dip:angle(lm[6],lm[7],lm[8],aspect),thumb_ip:angle(lm[2],lm[3],lm[4],aspect),
+   handedness:label,handedness_score:finite(score)?Number(score):null,hand_match:label===expected,inference_latency_ms:finite(latency)?Number(latency):null,coordinate_frame:'palm_local_3d',temporal_filter:'one_euro_1.7_beta0.04'}
 }
 function onResults(res){
  const job=pendingJob;pendingJob=null;busy=false;const cap=job?.cap||null,expected=cap?.side||side,pick=selectHand(res,expected),now=performance.now();
- if(pick)draw(pick.lm||null);
- if(cap){cap.processed_frames++;cap.pending_jobs=Math.max(0,cap.pending_jobs-1);
-   if(pick){
-     const filtered=filterLandmarks(pick.lm,expected,job.sourceAt),r=rowFromLandmarks(filtered,job.sourceAt-cap.start,pick.label,pick.score,expected,now-job.sourceAt,pick.lm);
-     if(r){r.capture_clock='queued_source_frame';cap.rows.push(r);cap.tracked++}
-   }
- }
+ if(cap){cap.processed_frames++;cap.pending_jobs=Math.max(0,cap.pending_jobs-1);if(pick){const filtered=filterLandmarks(pick.lm,expected,job.sourceAt),r=rowFromLandmarks(filtered,job.sourceAt-cap.start,pick.label,pick.score,expected,now-job.sourceAt,pick.lm);if(r){r.capture_clock='queued_source_frame';cap.rows.push(r);cap.tracked++;const cal=sideCalibration[expected],close=finite(cal?.close_threshold_norm)?Number(cal.close_threshold_norm):(finite(cal?.closed_reference_norm)&&finite(cal?.open_reference_norm)?Number(cal.closed_reference_norm)+.35*(Number(cal.open_reference_norm)-Number(cal.closed_reference_norm)):null);draw(filtered,{side:expected,opening:r.opening,contact:finite(close)?r.opening<=close:false})}else draw(pick.lm,{side:expected,opening:null,contact:false})}}
+ else if(pick)draw(pick.lm,{side:expected,opening:null,contact:false});
  if(job&&!job.direct)closeImage(job.image);setTimeout(pumpFrameQueue,0)
 }
 async function frame(now=performance.now(),meta=null){
@@ -4993,125 +4993,56 @@ function extrema(grid,periodMs){const p=periodMs||350,rad=Math.max(2,Math.round(
 function localMaxIndex(grid,a,b){let bi=-1,bv=-Infinity;for(let i=Math.max(0,a);i<=Math.min(grid.length-1,b);i++){const v=grid[i].opening_s;if(finite(v)&&v>bv){bv=v;bi=i}}return bi}
 function localMinIndex(grid,a,b){let bi=-1,bv=Infinity;for(let i=Math.max(0,a);i<=Math.min(grid.length-1,b);i++){const v=grid[i].opening_s;if(finite(v)&&v<bv){bv=v;bi=i}}return bi}
 function detectCycles(raw,cal=null,expectedSide=side,expectedDurationMs=DURATION){
- const pre=preprocess(raw,expectedDurationMs),g=pre.grid;if(g.length<8)return{accepted:[],rejected:[],candidates:[],pre,period:null,recovered:0};
- let per=estimatePeriod(g,pre.step);const period=finite(per?.ms)?Number(per.ms):(finite(cal?.period_ms)?Number(cal.period_ms):350),
- ex=extrema(g,period),series=g.map(r=>r.opening_s).filter(finite),range=Math.max(.006,(quant(series,.90)||0)-(quant(series,.10)||0)),
- residual=[];for(let i=0;i<g.length;i++)if(finite(g[i].opening)&&finite(g[i].opening_s))residual.push(g[i].opening-g[i].opening_s);
- const rm=median(residual)||0,noise=1.4826*(median(residual.map(x=>Math.abs(x-rm)))||0),promFloor=Math.max(.0035,3.0*noise,range*.04),candidate=[];
- const refined=(i)=>{
-   if(i<=0||i>=g.length-1||!finite(g[i-1].opening_s)||!finite(g[i].opening_s)||!finite(g[i+1].opening_s))return{t:g[i].t,y:g[i].opening_s,delta:0};
-   const ym=g[i-1].opening_s,y0=g[i].opening_s,yp=g[i+1].opening_s,den=(ym-2*y0+yp);
-   if(Math.abs(den)<1e-9)return{t:g[i].t,y:y0,delta:0};
-   const d=clamp(.5*(ym-yp)/den,-.5,.5),y=y0-.25*(ym-yp)*d;
-   return{t:g[i].t+d*pre.step,y,delta:d}
- };
- for(let n=0;n<ex.mins.length;n++){
-   const i=ex.mins[n],rf=refined(i),prevMid=n?Math.floor((ex.mins[n-1]+i)/2):Math.max(0,i-Math.round(period/pre.step*.72)),
-   nextMid=n<ex.mins.length-1?Math.floor((i+ex.mins[n+1])/2):Math.min(g.length-1,i+Math.round(period/pre.step*.72)),
-   li=localMaxIndex(g,prevMid,i-1),ri=localMaxIndex(g,i+1,nextMid);if(li<0||ri<0)continue;
-   const min=rf.y,lb=g[li].opening_s,rb=g[ri].opening_s,amp=((lb-min)+(rb-min))/2,
-   closeDur=rf.t-g[li].t,openDur=g[ri].t-rf.t,phaseOk=closeDur>=25&&openDur>=25&&closeDur<=Math.max(900,period*1.6)&&openDur<=Math.max(900,period*1.6),
-   local=g.slice(li,ri+1),validFrac=local.length?local.filter(r=>r.valid).length/local.length:0,handFrac=local.length?local.filter(r=>r.hand_match).length/local.length:0,
-   dirBefore=local.slice(0,Math.max(1,Math.floor(local.length/2))).filter(r=>finite(r.opening_s)),dirAfter=local.slice(Math.max(0,Math.floor(local.length/2))).filter(r=>finite(r.opening_s)),
-   closing=dirBefore.length>1?dirBefore.filter((r,k)=>k&&r.opening_s<dirBefore[k-1].opening_s).length/(dirBefore.length-1):0,
-   opening=dirAfter.length>1?dirAfter.filter((r,k)=>k&&r.opening_s>dirAfter[k-1].opening_s).length/(dirAfter.length-1):0,
-   phaseScore=(closing+opening)/2,
-   jointDelta=mean(['index_mcp','index_pip','index_dip','thumb_ip'].map(k=>{
-     const c=Number(g[i]?.[k]),a=Number(g[li]?.[k]),b=Number(g[ri]?.[k]);return finite(c)&&finite(a)&&finite(b)?Math.abs(c-(a+b)/2):null
-   }).filter(finite)),
-   jointScore=finite(jointDelta)?clamp(jointDelta/18,0,1):.5,
-   ampScore=clamp((amp-promFloor)/(Math.max(promFloor,range*.30)-promFloor+1e-6),0,1),
-   score=clamp(.38*ampScore+.29*phaseScore+.18*validFrac+.05*handFrac+.10*jointScore,0,1),
-   complete=phaseOk&&amp>=promFloor&&validFrac>=.80&&phaseScore>=.35;
-   candidate.push({i,t_ms:rf.t,subframe_offset:rf.delta,open_before_norm:lb,close_norm:min,open_after_norm:rb,amplitude_norm:amp,closing_ms:closeDur,opening_ms:openDur,
-     phase_direction_score:phaseScore,joint_motion_score:jointScore,local_tracking_fraction:validFrac,hand_match_fraction:handFrac,quality_score:score,recovered:false,complete})
- }
- const anchors=candidate.filter(c=>c.complete).sort((a,b)=>a.t_ms-b.t_ms),recovered=[];
- for(let k=1;k<anchors.length;k++){
-   const a=anchors[k-1],b=anchors[k],gap=b.t_ms-a.t_ms,miss=Math.round(gap/period)-1;if(miss<=0||miss>5)continue;
-   for(let m=1;m<=miss;m++){
-     const target=a.t_ms+m*period,idx=Math.round((target-g[0].t)/pre.step),rad=Math.max(2,Math.round(period*.30/pre.step)),
-     mi=localMinIndex(g,idx-rad,idx+rad);if(mi<0||candidate.some(c=>Math.abs(c.i-mi)<=2)||recovered.some(c=>Math.abs(c.i-mi)<=2))continue;
-     const rf=refined(mi),li=localMaxIndex(g,mi-Math.round(period*.68/pre.step),mi-1),ri=localMaxIndex(g,mi+1,mi+Math.round(period*.68/pre.step));if(li<0||ri<0)continue;
-     const min=rf.y,lb=g[li].opening_s,rb=g[ri].opening_s,amp=((lb-min)+(rb-min))/2,local=g.slice(li,ri+1),
-     validFrac=local.length?local.filter(r=>r.valid).length/local.length:0,
-     before=local.slice(0,Math.max(1,Math.floor(local.length/2))).filter(r=>finite(r.opening_s)),
-     after=local.slice(Math.max(0,Math.floor(local.length/2))).filter(r=>finite(r.opening_s)),
-     closing=before.length>1?before.filter((r,z)=>z&&r.opening_s<before[z-1].opening_s).length/(before.length-1):0,
-     opening=after.length>1?after.filter((r,z)=>z&&r.opening_s>after[z-1].opening_s).length/(after.length-1):0,phaseScore=(closing+opening)/2;
-     if(amp>=promFloor*.72&&validFrac>=.80&&phaseScore>=.30)recovered.push({i:mi,t_ms:rf.t,subframe_offset:rf.delta,open_before_norm:lb,close_norm:min,open_after_norm:rb,amplitude_norm:amp,
-       closing_ms:rf.t-g[li].t,opening_ms:g[ri].t-rf.t,phase_direction_score:phaseScore,joint_motion_score:null,local_tracking_fraction:validFrac,
-       hand_match_fraction:local.length?local.filter(r=>r.hand_match).length/local.length:0,quality_score:clamp(.45*amp/(Math.max(promFloor,range*.30))+.35*phaseScore+.20*validFrac,0,1),recovered:true,complete:true})
+ const pre=preprocess(raw,expectedDurationMs),g=pre.grid;if(g.length<8)return{accepted:[],rejected:[],candidates:[],pre,period:null,recovered:0,method:'hysteresis+extrema_v10'};
+ const series=g.map(r=>r.opening_s).filter(finite),trialOpen=quant(series,.88),trialClose=quant(series,.12),calOpen=Number(cal?.open_reference_norm),calClose=Number(cal?.closed_reference_norm),
+ openRef=finite(calOpen)?(.65*calOpen+.35*trialOpen):trialOpen,closeRef=finite(calClose)?(.65*calClose+.35*trialClose):trialClose,range=Math.max(.008,Number(openRef)-Number(closeRef)),
+ closeTh=finite(cal?.close_threshold_norm)?(.7*Number(cal.close_threshold_norm)+.3*(Number(closeRef)+.34*range)):Number(closeRef)+.34*range,
+ openTh=finite(cal?.open_threshold_norm)?(.7*Number(cal.open_threshold_norm)+.3*(Number(closeRef)+.68*range)):Number(closeRef)+.68*range;
+ const residual=[];for(const q of pre.rows){if(finite(q.opening)){const near=g.reduce((best,r)=>Math.abs(r.t-q.t)<Math.abs(best.t-q.t)?r:best,g[0]);if(finite(near?.opening_s))residual.push(Number(q.opening)-Number(near.opening_s))}}
+ const rm=median(residual)||0,noise=1.4826*(median(residual.map(x=>Math.abs(x-rm)))||0),minAmp=Math.max(.006,2.4*noise,.08*range),candidate=[];
+ let state='open',openIdx=null,minIdx=null,minVal=Infinity;
+ const localMax=(a,b)=>{let bi=-1,bv=-Infinity;for(let i=Math.max(0,a);i<=Math.min(g.length-1,b);i++)if(finite(g[i].opening_s)&&g[i].opening_s>bv){bv=g[i].opening_s;bi=i}return bi};
+ for(let i=0;i<g.length;i++){
+   const y=g[i].opening_s;if(!finite(y))continue;
+   if(state==='open'){
+     if(y>=openTh)openIdx=i;
+     if(openIdx!=null&&y<=closeTh){state='closed';minIdx=i;minVal=y}
+   }else{
+     if(y<minVal){minVal=y;minIdx=i}
+     if(y>=openTh){const li=localMax(Math.max(0,(openIdx??minIdx)-3),minIdx-1),ri=localMax(minIdx+1,i+3);if(li>=0&&ri>=0){const amp=((g[li].opening_s-minVal)+(g[ri].opening_s-minVal))/2,local=g.slice(li,ri+1),validFrac=local.length?local.filter(r=>r.valid).length/local.length:0,handFrac=local.length?local.filter(r=>r.hand_match).length/local.length:0,closeMs=g[minIdx].t-g[li].t,openMs=g[ri].t-g[minIdx].t,phaseOK=closeMs>=20&&openMs>=20&&closeMs<=700&&openMs<=700,complete=phaseOK&&amp>=minAmp&&validFrac>=.82;const quality=clamp(.48*clamp(amp/(Math.max(minAmp,range*.28)),0,1)+.42*validFrac+.10*handFrac,0,1);candidate.push({i:minIdx,t_ms:g[minIdx].t,open_before_norm:g[li].opening_s,close_norm:minVal,open_after_norm:g[ri].opening_s,amplitude_norm:amp,closing_ms:closeMs,opening_ms:openMs,local_tracking_fraction:validFrac,hand_match_fraction:handFrac,quality_score:quality,recovered:false,complete})}state='open';openIdx=i;minIdx=null;minVal=Infinity}
    }
  }
- const all=candidate.concat(recovered).sort((a,b)=>a.t_ms-b.t_ms),ded=[];
- for(const c of all){if(!ded.length||c.t_ms-ded.at(-1).t_ms>Math.max(60,period*.26))ded.push(c);else if(c.quality_score>ded.at(-1).quality_score)ded[ded.length-1]=c}
- const accepted=ded.filter(c=>c.complete),rejected=ded.filter(c=>!c.complete).map(c=>({...c,metric_censored:true}));
- return{accepted,rejected,candidates:ded,pre,period:{ms:period,correlation:per?.correlation??null},recovered:accepted.filter(x=>x.recovered).length,range,promFloor,signal_noise_estimate:noise}
+ // Rescue only evidence-rich local minima not already captured; never infer a cycle from cadence alone.
+ const step=pre.step||33.3;for(let i=2;i<g.length-2;i++){if(!finite(g[i].opening_s)||!(g[i].opening_s<=g[i-1].opening_s&&g[i].opening_s<g[i+1].opening_s)||candidate.some(c=>Math.abs(c.i-i)<=Math.max(2,Math.round(90/step))))continue;const rad=Math.max(3,Math.round(280/step)),li=localMax(i-rad,i-1),ri=localMax(i+1,i+rad);if(li<0||ri<0)continue;const min=g[i].opening_s,amp=((g[li].opening_s-min)+(g[ri].opening_s-min))/2;if(!(min<=closeTh*1.05&&g[li].opening_s>=openTh*.95&&g[ri].opening_s>=openTh*.95&&amp>=minAmp*1.10))continue;const local=g.slice(li,ri+1),validFrac=local.length?local.filter(r=>r.valid).length/local.length:0;if(validFrac<.88)continue;candidate.push({i,t_ms:g[i].t,open_before_norm:g[li].opening_s,close_norm:min,open_after_norm:g[ri].opening_s,amplitude_norm:amp,closing_ms:g[i].t-g[li].t,opening_ms:g[ri].t-g[i].t,local_tracking_fraction:validFrac,hand_match_fraction:local.length?local.filter(r=>r.hand_match).length/local.length:0,quality_score:clamp(.52*amp/(Math.max(minAmp,range*.30))+.48*validFrac,0,1),recovered:true,complete:true})}
+ candidate.sort((a,b)=>a.t_ms-b.t_ms);const ded=[];for(const c of candidate){if(!ded.length||c.t_ms-ded.at(-1).t_ms>70)ded.push(c);else if(c.quality_score>ded.at(-1).quality_score)ded[ded.length-1]=c}
+ const accepted=ded.filter(c=>c.complete),rejected=ded.filter(c=>!c.complete).map(c=>({...c,metric_censored:true})),ivs=[];for(let i=1;i<accepted.length;i++)ivs.push(accepted[i].t_ms-accepted[i-1].t_ms);const period=ivs.length?median(ivs):null;
+ return{accepted,rejected,candidates:ded,pre,period:{ms:period,correlation:null},recovered:accepted.filter(x=>x.recovered).length,range,promFloor:minAmp,signal_noise_estimate:noise,thresholds:{close:closeTh,open:openTh,closed_reference:closeRef,open_reference:openRef},method:'hysteresis+extrema_v10'}
 }
 function buildCalibration(rows,attempted,tracked,expectedSide){
- const det=detectCycles(rows,null,expectedSide,CAL_MS),amps=det.accepted.map(x=>x.amplitude_norm),ivs=[];
- for(let i=1;i<det.accepted.length;i++)ivs.push(det.accepted[i].t_ms-det.accepted[i-1].t_ms);
- const aMed=median(amps),pMed=median(ivs),aMad=median(amps.map(x=>Math.abs(x-aMed)))||0,pMad=median(ivs.map(x=>Math.abs(x-pMed)))||0,
- consistent=det.accepted.filter((x,i)=>{const av=Math.abs(x.amplitude_norm-aMed)<=Math.max(.012,3*1.4826*aMad),pv=i===0||Math.abs((x.t_ms-det.accepted[i-1].t_ms)-pMed)<=Math.max(90,3*1.4826*pMad);return av&&pv}).length,
- cons=det.accepted.length?100*consistent/det.accepted.length:0,tracking=attempted?100*tracked/attempted:0,hz=det.pre.native_hz||det.pre.hz||0,
- trace=Number(det.pre.continuous_coverage_pct||0),temporal=Number(det.pre.temporal_coverage_pct||0),combined=Number(det.pre.coverage||0),
- reasons=[tracking<70?'tracking_low':null,hz<10?'sampling_low':null,trace<85?'continuous_trace_low':null,temporal<85?'calibration_duration_low':null,
-          det.accepted.length<5?'too_few_cycles':null,!finite(aMed)?'amplitude_unavailable':null,cons<55?'cycle_consistency_low':null].filter(Boolean),
- valid=reasons.length===0;
- return{valid,validity_reasons:reasons,cycle_count:det.accepted.length,tracking_pct:+tracking.toFixed(1),native_tracking_hz:+hz.toFixed(2),
- analysis_hz:finite(det.pre.analysis_hz)?+det.pre.analysis_hz.toFixed(2):null,continuous_trace_coverage_pct:+trace.toFixed(1),
- temporal_coverage_pct:+temporal.toFixed(1),combined_coverage_pct:+combined.toFixed(1),analysis_interpolated_pct:+det.pre.interpolated_pct.toFixed(1),
- observed_span_ms:+Number(det.pre.observed_span_ms||0).toFixed(1),period_ms:finite(pMed)?+pMed.toFixed(2):(det.period?.ms??null),
- amplitude_median_norm:finite(aMed)?+aMed.toFixed(5):null,amplitude_mad_norm:+aMad.toFixed(5),period_mad_ms:+pMad.toFixed(2),
- crossval_consistency_pct:+cons.toFixed(1),closed_reference_norm:median(det.accepted.map(x=>x.close_norm)),
- open_reference_norm:median(det.accepted.flatMap(x=>[x.open_before_norm,x.open_after_norm])),
- method:'7 s personal full-cycle calibration; coverage normalized to calibration duration (not 15 s test); all tracked frames retained; sub-frame event timing; adaptive signal-noise threshold'}
+ const det=detectCycles(rows,null,expectedSide,CAL_MS),amps=det.accepted.map(x=>x.amplitude_norm),ivs=[];for(let i=1;i<det.accepted.length;i++)ivs.push(det.accepted[i].t_ms-det.accepted[i-1].t_ms);
+ const aMed=median(amps),pMed=median(ivs),aMad=median(amps.map(x=>Math.abs(x-aMed)))||0,pMad=median(ivs.map(x=>Math.abs(x-pMed)))||0,consistent=det.accepted.filter((x,i)=>{const av=Math.abs(x.amplitude_norm-aMed)<=Math.max(.012,3*1.4826*aMad),pv=i===0||Math.abs((x.t_ms-det.accepted[i-1].t_ms)-pMed)<=Math.max(90,3*1.4826*pMad);return av&&pv}).length,
+ cons=det.accepted.length?100*consistent/det.accepted.length:0,tracking=attempted?100*tracked/attempted:0,hz=det.pre.native_hz||det.pre.hz||0,trace=Number(det.pre.continuous_coverage_pct||0),temporal=Number(det.pre.temporal_coverage_pct||0),combined=Number(det.pre.coverage||0),closed=median(det.accepted.map(x=>x.close_norm)),open=median(det.accepted.flatMap(x=>[x.open_before_norm,x.open_after_norm])),rng=finite(closed)&&finite(open)?open-closed:null,
+ reasons=[tracking<70?'tracking_low':null,hz<10?'sampling_low':null,trace<85?'continuous_trace_low':null,temporal<85?'calibration_duration_low':null,det.accepted.length<5?'too_few_cycles':null,!finite(aMed)?'amplitude_unavailable':null,cons<55?'cycle_consistency_low':null].filter(Boolean),valid=reasons.length===0;
+ return{valid,validity_reasons:reasons,cycle_count:det.accepted.length,tracking_pct:+tracking.toFixed(1),native_tracking_hz:+hz.toFixed(2),analysis_hz:finite(det.pre.analysis_hz)?+det.pre.analysis_hz.toFixed(2):null,continuous_trace_coverage_pct:+trace.toFixed(1),temporal_coverage_pct:+temporal.toFixed(1),combined_coverage_pct:+combined.toFixed(1),analysis_interpolated_pct:+det.pre.interpolated_pct.toFixed(1),observed_span_ms:+Number(det.pre.observed_span_ms||0).toFixed(1),period_ms:finite(pMed)?+pMed.toFixed(2):(det.period?.ms??null),amplitude_median_norm:finite(aMed)?+aMed.toFixed(5):null,amplitude_mad_norm:+aMad.toFixed(5),period_mad_ms:+pMad.toFixed(2),crossval_consistency_pct:+cons.toFixed(1),closed_reference_norm:closed,open_reference_norm:open,close_threshold_norm:finite(rng)?closed+.34*rng:null,open_threshold_norm:finite(rng)?closed+.68*rng:null,method:'7 s personal full-cycle calibration; direct observed cycles; hysteresis contact state; no cycle inferred from cadence alone'}
 }
 function theilSen(x,y){const s=[];for(let i=0;i<x.length;i++)for(let j=i+1;j<x.length;j++)if(x[j]!==x[i])s.push((y[j]-y[i])/(x[j]-x[i]));return median(s)}
 function derive(rows,attempted,tracked,cal=null,expectedSide=side){
- const det=detectCycles(rows,cal,expectedSide,DURATION),ev=det.accepted.slice().sort((a,b)=>a.t_ms-b.t_ms),slots=det.candidates.slice().sort((a,b)=>a.t_ms-b.t_ms),ivs=[];
- for(let i=1;i<ev.length;i++){const d=ev[i].t_ms-ev[i-1].t_ms;if(d>0)ivs.push(d)}
- const observedMed=median(ivs),period=finite(observedMed)?Number(observedMed):((finite(det.period?.correlation)&&det.period.correlation!==null&&finite(det.period?.ms))?Number(det.period.ms):(finite(cal?.period_ms)?Number(cal.period_ms):det.period?.ms)),
- usable=ivs.filter(d=>!finite(period)||(d>=Math.max(60,.40*period)&&d<=Math.min(1800,1.95*period))),
- rate=usable.length?1000/median(usable):(ev.length>1?1000/median(ivs):null),amps=ev.map(x=>x.amplitude_norm),
- tStart=det.pre.grid.find(x=>x.valid)?.t??0,tEnd=[...det.pre.grid].reverse().find(x=>x.valid)?.t??DURATION,halfT=(tStart+tEnd)/2,
- first=ev.filter(x=>x.t_ms<halfT),second=ev.filter(x=>x.t_ms>=halfT),a1=median(first.map(x=>x.amplitude_norm)),a2=median(second.map(x=>x.amplitude_norm)),
- ampDec=finite(a1)&&a1>0&&finite(a2)?100*(a1-a2)/a1:null,dur1=Math.max(.001,(halfT-tStart)/1000),dur2=Math.max(.001,(tEnd-halfT)/1000),
- r1=first.length/dur1,r2=second.length/dur2,rateChange=finite(r1)&&r1>0&&finite(r2)?100*(r2-r1)/r1:null,instT=[],instR=[];
- for(let i=1;i<ev.length;i++){const d=ev[i].t_ms-ev[i-1].t_ms;if(d>0&&(!finite(period)||(d>=.40*period&&d<=1.95*period))){instT.push((ev[i].t_ms+ev[i-1].t_ms)/2000);instR.push(1000/d)}}
- const slope=instT.length>=4?theilSen(instT,instR):null,grid=det.pre.grid,vel=[];
- for(let i=1;i<grid.length;i++){if(finite(grid[i].opening_s)&&finite(grid[i-1].opening_s)){const dt=(grid[i].t-grid[i-1].t)/1000;if(dt>0)vel.push(Math.abs(grid[i].opening_s-grid[i-1].opening_s)/dt)}}
- const maxGap=det.pre.maxGap,tracking=attempted?100*tracked/attempted:0,temporal=det.pre.coverage,handMatch=rows.length?100*rows.filter(r=>r.hand_match).length/rows.length:0,
- palmCv=cv(rows.map(r=>r.palm)),lat95=quant(rows.map(r=>r.inference_latency_ms),.95),span=Math.max(1,tEnd-tStart),
- estimated=finite(period)?Math.max(1,Math.round(span/period)):ev.length,coverage=estimated?clamp(100*ev.length/estimated,0,100):0,
- nativeHz=det.pre.native_hz||det.pre.hz||0,
- endpoint=tracking>=70&&nativeHz>=10&&temporal>=85&&(!finite(maxGap)||maxGap<=240)&&ev.length>=4&&finite(rate)&&rate>=.20&&rate<=10&&finite(median(amps)),
- strict=endpoint&&tracking>=90&&nativeHz>=12&&temporal>=95&&(!finite(maxGap)||maxGap<=200)&&ev.length>=8&&(!cal||cal.valid===true);
- return{valid:endpoint,endpoint_usable:endpoint,strict_valid:strict,
- validity_reasons:endpoint?[]:[tracking<70?'tracking_low':null,nativeHz<10?'sampling_low':null,temporal<85?'continuous_trace_coverage_low':null,(finite(maxGap)&&maxGap>240)?'tracking_gap_large':null,ev.length<4?'too_few_cycles':null,!finite(rate)?'rate_unavailable':null].filter(Boolean),
- tracking_pct:+tracking.toFixed(1),native_frame_count:rows.length,analysis_frame_count:grid.filter(x=>x.valid).length,
- analysis_attempt_hz:attempted?+(attempted/(DURATION/1000)).toFixed(2):null,native_tracking_hz:+nativeHz.toFixed(2),
- effective_tracking_hz:+nativeHz.toFixed(2),sample_hz:+nativeHz.toFixed(2),analysis_hz:finite(det.pre.analysis_hz)?+det.pre.analysis_hz.toFixed(2):null,
- analysis_interpolated_pct:+Number(det.pre.interpolated_pct||0).toFixed(1),continuous_trace_coverage_pct:+Number(temporal||0).toFixed(1),
- max_tracking_gap_ms:finite(maxGap)?+maxGap.toFixed(1):null,temporal_coverage_pct:+Number(temporal||0).toFixed(1),handedness_match_pct:+handMatch.toFixed(1),
- palm_scale_cv_pct:finite(palmCv)?+palmCv.toFixed(2):null,inference_latency_p95_ms:finite(lat95)?+lat95.toFixed(1):null,
- cycle_count:ev.length,candidate_cycle_count:slots.length,rejected_cycle_count:det.rejected.length,event_acceptance_pct:slots.length?+(100*ev.length/slots.length).toFixed(1):null,
- event_confidence_mean_pct:mean(ev.map(x=>100*x.quality_score)),event_margin_mean_pct:null,
- event_component_agreement_mean_pct:mean(ev.map(x=>100*((x.phase_direction_score+x.local_tracking_fraction)/2))),
- usable_interval_count:usable.length,censored_interval_count:Math.max(0,ivs.length-usable.length),rejected_crossing_interval_count:det.rejected.length,
- gap_censored_interval_count:0,short_censored_interval_count:Math.max(0,ivs.length-usable.length),suspected_missing_cycle_count:Math.max(0,estimated-ev.length),
- expected_cycle_interval_ms:finite(period)?+period.toFixed(2):null,signal_period_estimate_ms:finite(det.period?.ms)?+det.period.ms.toFixed(2):null,
- cycle_detection_coverage_pct:+coverage.toFixed(1),recovered_cycle_candidate_count:det.recovered,estimated_expected_cycle_count:estimated,
- cycle_rate_hz:+Number(rate).toFixed(4),mean_amplitude_norm:finite(mean(amps))?+mean(amps).toFixed(5):null,median_amplitude_norm:finite(median(amps))?+median(amps).toFixed(5):null,
- amplitude_decrement_pct:finite(ampDec)?+ampDec.toFixed(2):null,rhythm_cv_pct:finite(cv(usable))?+cv(usable).toFixed(2):null,
- intertap_cv_pct:finite(cv(usable))?+cv(usable).toFixed(2):null,intertap_sd_ms:finite(sd(usable))?+sd(usable).toFixed(2):null,
- cycle_rate_first_half_hz:finite(r1)?+r1.toFixed(4):null,cycle_rate_second_half_hz:finite(r2)?+r2.toFixed(4):null,
- cycle_rate_change_pct:finite(rateChange)?+rateChange.toFixed(2):null,speed_slope_hz_per_s:finite(slope)?+slope.toFixed(5):null,
- velocity_p90_norm_s:finite(quant(vel,.9))?+quant(vel,.9).toFixed(4):null,pause_count:usable.filter(d=>finite(period)&&d>1.6*period).length,
- events:ev.map(x=>({t_ms:+x.t_ms.toFixed(1),amplitude_norm:+x.amplitude_norm.toFixed(5),quality_score:+x.quality_score.toFixed(3),recovered:!!x.recovered})),
- rejected_events:det.rejected.map(x=>({t_ms:+x.t_ms.toFixed(1),amplitude_norm:finite(x.amplitude_norm)?+x.amplitude_norm.toFixed(5):null,metric_censored:true}))
- }
+ const det=detectCycles(rows,cal,expectedSide,DURATION),ev=det.accepted.slice().sort((a,b)=>a.t_ms-b.t_ms),slots=det.candidates.slice().sort((a,b)=>a.t_ms-b.t_ms),ivs=[];for(let i=1;i<ev.length;i++){const d=ev[i].t_ms-ev[i-1].t_ms;if(d>0)ivs.push(d)}
+ const medI=median(ivs),usable=ivs.filter(d=>finite(medI)?d>=Math.max(55,.45*medI)&&d<=Math.min(1800,1.8*medI):true),rateInterval=usable.length?1000/median(usable):null,
+ eventSpan=ev.length>1?ev.at(-1).t_ms-ev[0].t_ms:0,rateSpan=ev.length>1&&eventSpan>250?1000*(ev.length-1)/eventSpan:null,
+ tStart=det.pre.grid.find(x=>x.valid)?.t??0,tEnd=[...det.pre.grid].reverse().find(x=>x.valid)?.t??DURATION,observedSpan=Math.max(1,tEnd-tStart),rateWindow=1000*ev.length/observedSpan,
+ signalPeriod=finite(det.period?.ms)?Number(det.period.ms):(finite(cal?.period_ms)?Number(cal.period_ms):medI),expected=finite(signalPeriod)&&signalPeriod>0?Math.max(1,Math.round(observedSpan/signalPeriod)):ev.length,
+ detectionCoverage=expected?clamp(100*ev.length/expected,0,100):0,temporalSpan=ev.length>1?100*eventSpan/observedSpan:0,rateConcordance=finite(rateSpan)&&finite(rateInterval)&&Math.max(rateSpan,rateInterval)>0?100*Math.abs(rateSpan-rateInterval)/Math.max(rateSpan,rateInterval):null,
+ rate=finite(rateSpan)?rateSpan:rateInterval,amps=ev.map(x=>x.amplitude_norm),halfT=(tStart+tEnd)/2,first=ev.filter(x=>x.t_ms<halfT),second=ev.filter(x=>x.t_ms>=halfT),a1=median(first.map(x=>x.amplitude_norm)),a2=median(second.map(x=>x.amplitude_norm)),ampDec=finite(a1)&&a1>0&&finite(a2)?100*(a1-a2)/a1:null,dur1=Math.max(.001,(halfT-tStart)/1000),dur2=Math.max(.001,(tEnd-halfT)/1000),r1=first.length/dur1,r2=second.length/dur2,rateChange=finite(r1)&&r1>0&&finite(r2)?100*(r2-r1)/r1:null,instT=[],instR=[];
+ for(let i=1;i<ev.length;i++){const d=ev[i].t_ms-ev[i-1].t_ms;if(d>0&&(!finite(medI)||(d>=.45*medI&&d<=1.8*medI))){instT.push((ev[i].t_ms+ev[i-1].t_ms)/2000);instR.push(1000/d)}}
+ const slope=instT.length>=4?theilSen(instT,instR):null,grid=det.pre.grid,vel=[];for(let i=1;i<grid.length;i++){if(finite(grid[i].opening_s)&&finite(grid[i-1].opening_s)){const dt=(grid[i].t-grid[i-1].t)/1000;if(dt>0)vel.push(Math.abs(grid[i].opening_s-grid[i-1].opening_s)/dt)}}
+ const maxGap=det.pre.maxGap,tracking=attempted?100*tracked/attempted:0,temporal=det.pre.coverage,handMatch=rows.length?100*rows.filter(r=>r.hand_match).length/rows.length:0,palmCv=cv(rows.map(r=>r.palm)),lat95=quant(rows.map(r=>r.inference_latency_ms),.95),nativeHz=det.pre.native_hz||det.pre.hz||0,
+ reasons=[tracking<70?'tracking_low':null,nativeHz<10?'sampling_low':null,temporal<85?'continuous_trace_coverage_low':null,(finite(maxGap)&&maxGap>240)?'tracking_gap_large':null,ev.length<4?'too_few_cycles':null,!finite(rate)?'rate_unavailable':null,(finite(rate)&&(rate<.2||rate>10))?'rate_implausible':null,detectionCoverage<60?'cycle_detection_coverage_low':null,temporalSpan<55?'cycle_temporal_span_low':null,(finite(rateConcordance)&&rateConcordance>28)?'rate_estimators_disagree':null].filter(Boolean),endpoint=reasons.length===0,
+ strict=endpoint&&tracking>=90&&nativeHz>=12&&temporal>=95&&(!finite(maxGap)||maxGap<=200)&&ev.length>=8&&detectionCoverage>=80&&temporalSpan>=75&&(!finite(rateConcordance)||rateConcordance<=18)&&(!cal||cal.valid===true);
+ return{valid:endpoint,endpoint_usable:endpoint,strict_valid:strict,validity_reasons:reasons,tracking_pct:+tracking.toFixed(1),native_frame_count:rows.length,analysis_frame_count:grid.filter(x=>x.valid).length,analysis_attempt_hz:attempted?+(attempted/(DURATION/1000)).toFixed(2):null,native_tracking_hz:+nativeHz.toFixed(2),effective_tracking_hz:+nativeHz.toFixed(2),sample_hz:+nativeHz.toFixed(2),analysis_hz:finite(det.pre.analysis_hz)?+det.pre.analysis_hz.toFixed(2):null,analysis_interpolated_pct:+Number(det.pre.interpolated_pct||0).toFixed(1),continuous_trace_coverage_pct:+Number(temporal||0).toFixed(1),max_tracking_gap_ms:finite(maxGap)?+maxGap.toFixed(1):null,temporal_coverage_pct:+Number(temporal||0).toFixed(1),handedness_match_pct:+handMatch.toFixed(1),palm_scale_cv_pct:finite(palmCv)?+palmCv.toFixed(2):null,inference_latency_p95_ms:finite(lat95)?+lat95.toFixed(1):null,
+ cycle_count:ev.length,candidate_cycle_count:slots.length,rejected_cycle_count:det.rejected.length,event_acceptance_pct:slots.length?+(100*ev.length/slots.length).toFixed(1):null,event_confidence_mean_pct:mean(ev.map(x=>100*x.quality_score)),event_margin_mean_pct:null,usable_interval_count:usable.length,censored_interval_count:Math.max(0,ivs.length-usable.length),rejected_crossing_interval_count:det.rejected.length,gap_censored_interval_count:0,short_censored_interval_count:Math.max(0,ivs.length-usable.length),suspected_missing_cycle_count:Math.max(0,expected-ev.length),expected_cycle_interval_ms:finite(signalPeriod)?+signalPeriod.toFixed(2):null,signal_period_estimate_ms:finite(signalPeriod)?+signalPeriod.toFixed(2):null,cycle_detection_coverage_pct:+detectionCoverage.toFixed(1),cycle_temporal_span_pct:+temporalSpan.toFixed(1),rate_span_hz:finite(rateSpan)?+rateSpan.toFixed(4):null,rate_interval_hz:finite(rateInterval)?+rateInterval.toFixed(4):null,rate_window_hz:+rateWindow.toFixed(4),rate_estimator_disagreement_pct:finite(rateConcordance)?+rateConcordance.toFixed(1):null,recovered_cycle_candidate_count:det.recovered,estimated_expected_cycle_count:expected,
+ cycle_rate_hz:finite(rate)?+Number(rate).toFixed(4):null,mean_amplitude_norm:finite(mean(amps))?+mean(amps).toFixed(5):null,median_amplitude_norm:finite(median(amps))?+median(amps).toFixed(5):null,amplitude_decrement_pct:finite(ampDec)?+ampDec.toFixed(2):null,rhythm_cv_pct:finite(cv(usable))?+cv(usable).toFixed(2):null,intertap_cv_pct:finite(cv(usable))?+cv(usable).toFixed(2):null,intertap_sd_ms:finite(sd(usable))?+sd(usable).toFixed(2):null,cycle_rate_first_half_hz:finite(r1)?+r1.toFixed(4):null,cycle_rate_second_half_hz:finite(r2)?+r2.toFixed(4):null,cycle_rate_change_pct:finite(rateChange)?+rateChange.toFixed(2):null,speed_slope_hz_per_s:finite(slope)?+slope.toFixed(5):null,velocity_p90_norm_s:finite(quant(vel,.9))?+quant(vel,.9).toFixed(4):null,pause_count:usable.filter(d=>finite(medI)&&d>1.6*medI).length,detector_method:det.method,detector_thresholds:det.thresholds,
+ events:ev.map(x=>({t_ms:+x.t_ms.toFixed(1),amplitude_norm:+x.amplitude_norm.toFixed(5),quality_score:+x.quality_score.toFixed(3),recovered:!!x.recovered})),rejected_events:det.rejected.map(x=>({t_ms:+x.t_ms.toFixed(1),amplitude_norm:finite(x.amplitude_norm)?+x.amplitude_norm.toFixed(5):null,metric_censored:true}))}
 }
 function compactVideoTrace(rows){
  return (rows||[]).filter(r=>finite(r.t)&&Array.isArray(r.raw_local)&&r.raw_local.length===21).map(r=>{
@@ -5150,23 +5081,19 @@ async function startTrial(){
  try{
   await ensureCamera();await ensureHands();if(!sideCalibration[side])await calibrate(side);
   E('vtapStatus').textContent='Preparati. Inizio tra 3 secondi…';for(let n=3;n>=1;n--){E('vtapTimer').textContent=String(n);await new Promise(r=>setTimeout(r,1000))}
-  E('vtapStatus').textContent='VIA — continua per 15 secondi. I frame sorgente vengono messi in coda e processati in ordine.';const timerStart=performance.now(),tick=()=>{const left=Math.max(0,(DURATION-(performance.now()-timerStart))/1000);E('vtapTimer').textContent=`${left.toFixed(1)} s`;if(left>0)requestAnimationFrame(tick)};requestAnimationFrame(tick);
-  const cap=await capture(DURATION,side);E('vtapStatus').textContent='Acquisizione terminata · completamento analisi dei frame in coda…';
-  const feat=derive(cap.rows,cap.attempted,cap.tracked,sideCalibration[side],side);
-  feat.source_frames_seen=cap.source_frames_seen;feat.software_dropped_frames=cap.software_dropped_frames;feat.queue_peak_frames=cap.queue_peak;feat.inference_errors=cap.inference_errors;
-  feat.source_frame_utilization_pct=cap.source_frames_seen?+(100*cap.attempted/cap.source_frames_seen).toFixed(1):null;
-  sideResults[side]=feat;data.video_tapping=data.video_tapping||{};data.video_tapping._frame_traces=data.video_tapping._frame_traces||{};
-  data.video_tapping[side+'_series']=cap.rows.map(r=>[r.t,r.opening]);data.video_tapping._frame_traces[side]=compactVideoTrace(cap.rows);
-  data.video_tapping.trace3d_format='[t_ms, 21×raw PALM-LOCAL-3D xyz, handedness_score, inference_latency_ms]; every queued unique source frame successfully processed';
-  E('vtapQuality').textContent=`Tracking ${feat.tracking_pct}% · utilizzo frame ${feat.source_frame_utilization_pct??'—'}% · drop software ${cap.software_dropped_frames} · tracing ${feat.continuous_trace_coverage_pct}% · ${feat.cycle_count} cicli`;
-  if(!feat.endpoint_usable){E('vtapStatus').textContent='Il tracciato completo è stato conservato, ma non ci sono ancora abbastanza cicli completi misurabili. Ripeti questa mano.';E('vtapStart').disabled=false;E('vtapSkip').disabled=false;E('vtapStart').textContent='RIPETI';return}
-  if(side==='right'){side='left';lastCenter=null;E('vtapStatus').textContent='Mano destra acquisita. Prepara la sinistra.';uiForSide()}else await finishVideo()
- }catch(e){console.error('RC90 video tapping',e);E('vtapStatus').textContent=String(e?.message||e);E('vtapStart').disabled=false;E('vtapSkip').disabled=false}
+  E('vtapStatus').textContent='VIA — apri e chiudi completamente pollice–indice. Ogni ciclo deve mostrare CONTATTO e poi APERTO.';const timerStart=performance.now(),tick=()=>{const left=Math.max(0,(DURATION-(performance.now()-timerStart))/1000);E('vtapTimer').textContent=`${left.toFixed(1)} s`;if(left>0)requestAnimationFrame(tick)};requestAnimationFrame(tick);
+  const cap=await capture(DURATION,side);E('vtapStatus').textContent='Acquisizione terminata · verifica dei cicli osservati…';const feat=derive(cap.rows,cap.attempted,cap.tracked,sideCalibration[side],side);
+  feat.source_frames_seen=cap.source_frames_seen;feat.software_dropped_frames=cap.software_dropped_frames;feat.queue_peak_frames=cap.queue_peak;feat.inference_errors=cap.inference_errors;feat.source_frame_utilization_pct=cap.source_frames_seen?+(100*cap.attempted/cap.source_frames_seen).toFixed(1):null;
+  sideResults[side]=feat;data.video_tapping=data.video_tapping||{};data.video_tapping._frame_traces=data.video_tapping._frame_traces||{};data.video_tapping[side+'_series']=cap.rows.map(r=>[r.t,r.opening]);data.video_tapping._frame_traces[side]=compactVideoTrace(cap.rows);data.video_tapping.trace3d_format='[t_ms, 21×raw PALM-LOCAL-3D xyz, handedness_score, inference_latency_ms]; every queued unique source frame successfully processed';
+  E('vtapQuality').textContent=`Tracking ${feat.tracking_pct}% · ${feat.cycle_count} cicli osservati · copertura cicli ${feat.cycle_detection_coverage_pct}% · span ${feat.cycle_temporal_span_pct}% · ${feat.cycle_rate_hz??'—'} Hz · drop ${cap.software_dropped_frames}`;
+  if(!feat.endpoint_usable){E('vtapStatus').textContent=`Segnale tracciato ma detector non affidabile: ${(feat.validity_reasons||[]).join(', ')}. Nessun rate viene stimato da cicli non osservati: ripeti questa mano.`;E('vtapStart').disabled=false;E('vtapSkip').disabled=false;E('vtapStart').textContent='RIPETI';return}
+  if(side==='right'){side='left';lastCenter=null;E('vtapStatus').textContent='Mano destra acquisita e verificata. Prepara la sinistra.';uiForSide()}else await finishVideo()
+ }catch(e){console.error('RC110 video tapping',e);E('vtapStatus').textContent=String(e?.message||e);E('vtapStart').disabled=false;E('vtapSkip').disabled=false}
 }
 async function finishVideo(){
  const features=aggregate(),traceId='video_tapping:'+((data?.id)||Date.now())+':'+Date.now(),tracePayload={type:'video_tapping',protocol:PROTOCOL,created_at:new Date().toISOString(),format:data.video_tapping?.trace3d_format,filter:{type:'OneEuro',minCutoffXY:1.7,minCutoffZ:1.25,betaXY:.04,betaZ:.025,dCutoff:1},right:data.video_tapping?._frame_traces?.right||[],left:data.video_tapping?._frame_traces?.left||[]};
  let stored=false;try{if(window.NDBFrameStore){await window.NDBFrameStore.put(traceId,tracePayload);stored=true}}catch(e){console.warn('RC90 frame store video tapping',e)}
- data.video_tapping={...(data.video_tapping||{}),status:features.endpoint_usable?'completed':'completed_qc_rejected',model:'MediaPipe Hands · NDB VIDEO-TAP v9 RC90 queued source frames + OneEuro + 21 landmarks',duration_ms:DURATION,
+ data.video_tapping={...(data.video_tapping||{}),status:features.endpoint_usable?'completed':'completed_qc_rejected',model:'MediaPipe Hands · NDB VIDEO-TAP v10 RC110 hysteresis + observed-cycle rate',duration_ms:DURATION,
  calibration:{method:'7 s per hand personal full-cycle calibration',right:sideCalibration.right,left:sideCalibration.left},
  camera_settings:{width:cameraSettings.width??null,height:cameraSettings.height??null,frameRate:cameraSettings.frameRate??null,facingMode:cameraSettings.facingMode??null},
  features,trace_ref:stored?traceId:null,trace_storage:stored?'indexeddb':'not_saved',trace_format:tracePayload.format,raw_video_saved:false};
@@ -8393,17 +8320,40 @@ window.NDBRC56AugmentCatalog=ndbRC56AugmentCatalog;
  async function exportResearchDataset(){const items={};for(const k of [...new Set(cloudKeys().filter(k=>k.startsWith('NDB_')))]){const v=localStorage.getItem(k);if(v!==null)try{items[k]=JSON.parse(v)}catch{items[k]=v}}const raw=await window.NDBRawVault?.exportAll?.(owner()).catch(()=>[])||[],pending={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith('NDB_RAW_PENDING:'))try{pending[k]=JSON.parse(localStorage.getItem(k))}catch{}}const dataset={format:'NDB-RESEARCH-DATASET-2',app_version:'NDB-RC100',exported_at:new Date().toISOString(),owner_scope:owner()?'authenticated-user':'local-anonymous',datasets:items,raw_vault:raw,raw_pending_recovery:pending,integrity:{complete_key_inventory:true,qa_rows_preserved_but_excluded_from_analysis:true,protocol_versions_preserved:true}};downloadBlob(new Blob([JSON.stringify(dataset,null,2)],{type:'application/json'}),'NDB_research_dataset_RC64_'+Date.now()+'.json');document.getElementById('datasummary').textContent='Dataset di ricerca RC100 esportato con inventario completo, dati grezzi locali e protocolli.'}window.exportResearchDataset=exportResearchDataset;
  const oldRestore=window.restoreBackup;window.restoreBackup=async function(){const f=document.getElementById('backup_file')?.files?.[0];if(!f)return oldRestore?.();if(f.size>25*1024*1024){document.getElementById('datasummary').textContent='Restore rifiutato: file oltre 25 MB.';return}return oldRestore?.()};
  function validRecord(k,x){
- if(!x||typeof x!=='object')return x;let reason=null;
+ if(!x||typeof x!=='object')return x;let reason=null,attested=null;
  if(x.qa_mode===true||x.session_mode==='qa'||x.test_mode===true)reason='qa_or_test_mode';
- if(k==='NDB_cognitive_sessions'&&!reason){const mode=String(x.session_mode||''),rawC=x?.raw_cognitive||{},rawT=x?.raw_tapping||{},rt=Array.isArray(rawC.reaction_trials)?rawC.reaction_trials:[],gg=Array.isArray(rawC.gonogo_trials)?rawC.gonogo_trials:[],tapOK=a=>Array.isArray(a)&&a.length>=8&&a.every((t,i)=>Number.isFinite(Number(t))&&Number(t)>=0&&Number(t)<=15000&&(i===0||Number(t)>Number(a[i-1])));let ok=true;if(mode==='cognitive_rt'){const om=Array.isArray(rawC.reaction_omissions)?rawC.reaction_omissions:[];ok=(rt.length+om.length===20)&&rt.length>=15&&rt.every(t=>Number.isFinite(Number(t?.rt))&&Number(t.rt)>80&&Number(t.rt)<=1500)&&om.every(o=>Number(o?.timeout_ms)===1500)}else if(mode==='cognitive_gonogo'){const goN=gg.filter(t=>t?.type==='go').length,noN=gg.filter(t=>t?.type==='nogo').length;ok=gg.length===24&&goN===15&&noN===9&&gg.every(t=>['go','nogo'].includes(t?.type)&&typeof t?.correct==='boolean'&&typeof t?.tapped==='boolean'&&(!t.tapped||(Number.isFinite(Number(t?.rt))&&Number(t.rt)>80&&Number(t.rt)<1500)))}else if(mode==='tapping_touch')ok=tapOK(rawT.right_timestamps_ms)&&tapOK(rawT.left_timestamps_ms);else if(mode==='tapping_video')ok=x?.tapping_video_status==='completed'&&x?.component_validity?.tapping_video===true;else ok=false;if(!ok)reason='core_component_qc_failed'}
- if(k==='NDB_trace_sessions'){const pts=Array.isArray(x.raw_points)?x.raw_points:[],span=pts.length>1?Number(pts.at(-1)?.[0])-Number(pts[0]?.[0]):0;if(pts.length<120||span<27000)reason='trace_temporal_coverage'}
- if(k==='NDB_speech_sessions'){const m=x?.metrics||{},task=x?.task,d=Number(m.duration_s??0),snr=Number(m.snr_calibrated_db??m.snr_proxy_db),common=d>=2&&Number(m.clipping_pct)<=.5&&m?.audio_qc?.accepted===true&&m?.watchdog?.accepted===true&&Number.isFinite(snr)&&snr>=(task==='vowel'?12:8);let ok=common;if(task==='vowel')ok=ok&&Number(m.accepted_repetition_count)===2&&Number(m.voice_cycle_count)>=40&&Number.isFinite(Number(m.jitter_local_pct))&&Number.isFinite(Number(m.shimmer_local_pct))&&Number.isFinite(Number(m.hnr_cycle_db));else if(task==='pata')ok=ok&&Number(m.count)>=8&&Number(m.accepted_interval_count)>=6&&Number(m.detector_agreement_pct)>=72&&Number.isFinite(Number(m.rate_hz))&&Number.isFinite(Number(m.interval_cv_pct));else if(task==='reading')ok=ok&&m.duration_window_ok===true&&m.reading_completed_by_user===true&&Number(m.speech_span_s)>=8&&Number.isFinite(Number(m.speaking_rate_wpm))&&Number.isFinite(Number(m.pause_ratio_pct));if(!ok)reason='speech_v2_qc_failed'}
- if(k==='NDB_visual_sessions'){const tr=Array.isArray(x.trials)?x.trials:[];const ok=tr.length===24&&tr.every(t=>Number.isFinite(Number(t?.rt_ms))&&Number(t.rt_ms)>=80&&Number(t.rt_ms)<=15000);if(!ok)reason='visual_timing_or_completion_qc';else if(x.measurement_valid_for_analysis!==true)x={...x,measurement_valid_for_analysis:true,familiarization_countable:true,baseline_eligible:x.familiarization_session===true?false:(x.baseline_eligible!==false),analysis_exclusion_reason:null}}
- if(k==='NDB_sleep_log'){const hm=v=>/^([01]\d|2[0-3]):[0-5]\d$/.test(String(v||''));const mins=v=>{const [h,m]=String(v).split(':').map(Number);return h*60+m};const lat=Number(x.latency_min??0),awake=Number(x.awake_min??0),awaken=Number(x.awakenings??0),q=Number(x.quality??3);let tib=null;if(hm(x.bedtime)&&hm(x.waketime)){let b=mins(x.bedtime),w=mins(x.waketime);if(w<b)w+=1440;tib=w-b}const expected=Number.isFinite(tib)?tib-lat-awake:null;const ok=!!x.date&&x.bedtime!==x.waketime&&Number.isFinite(tib)&&tib>=60&&tib<=1200&&Number.isFinite(lat)&&lat>=0&&Number.isFinite(awake)&&awake>=0&&Number.isInteger(awaken)&&awaken>=0&&awaken<=60&&q>=1&&q<=5&&Number.isFinite(expected)&&expected>=0&&(!Number.isFinite(Number(x.sleep_minutes))||Math.abs(Number(x.sleep_minutes)-expected)<=1);if(!ok)reason='sleep_cross_field_qc';else x={...x,sleep_minutes:expected,sleep_efficiency:100*expected/tib,measurement_valid_for_analysis:true,baseline_eligible:x.baseline_eligible!==false,analysis_exclusion_reason:null}}
- if(k==='NDB_vitals_log'){const n=v=>v===''||v==null?null:Number(v),sys=n(x.sys),dia=n(x.dia),ss=n(x.stand_sys),sd=n(x.stand_dia);if((sys!=null&&(sys<50||sys>280))||(dia!=null&&(dia<30||dia>180))||(n(x.hr)!=null&&(n(x.hr)<25||n(x.hr)>240))||(n(x.spo2)!=null&&(n(x.spo2)<50||n(x.spo2)>100))||(n(x.temp)!=null&&(n(x.temp)<30||n(x.temp)>45))||(sys!=null&&dia!=null&&sys<=dia)||(ss!=null&&sd!=null&&ss<=sd))reason='physiologically_implausible'}
- if(k==='NDB_physical_log'){const hasTug=x.tug!==null&&x.tug!==undefined,hasSts=x.chair5!==null&&x.chair5!==undefined,hasWalk=x.walk2_completed===true,tug=Number(x.tug),sts=Number(x.chair5),walkDur=Number(x.walk2_duration_s),tugOK=!hasTug||(Number.isFinite(tug)&&tug>=0.5&&tug<=600),stsOK=!hasSts||(Number.isFinite(sts)&&sts>=0.5&&sts<=600),walkOK=!hasWalk||(Number.isFinite(walkDur)&&walkDur>=118&&walkDur<=122);const cv={tug:hasTug?tugOK:null,chair5:hasSts?stsOK:null,walk2:hasWalk?walkOK:null};if(hasTug&&!tugOK)x={...x,tug:null,tug_imu_supported:false,tug_imu_sample_hz:null,tug_imu_accel_rms:null,tug_imu_gyro_rms:null,tug_imu_gyro_p95:null};if(hasSts&&!stsOK)x={...x,chair5:null};if(hasWalk&&!walkOK)x={...x,walk2_duration_s:null,walk2_distance_m:null,walk2_mean_speed_m_s:null,walk2_imu_supported:false,walk2_imu_sample_hz:null,walk2_imu_accel_rms:null,walk2_imu_gyro_rms:null,walk2_imu_gyro_p95:null};const anyValid=(hasTug&&tugOK)||(hasSts&&stsOK)||(hasWalk&&walkOK);x={...x,component_validity:cv};if((hasTug||hasSts||hasWalk)&&!anyValid)reason='mobility_component_qc_failed';else if(anyValid){const baseOK=!!(x.tug_baseline_eligible||x.chair5_baseline_eligible||x.walk2_baseline_eligible);x={...x,measurement_valid_for_analysis:true,baseline_eligible:baseOK,analysis_exclusion_reason:baseOK?((!tugOK||!stsOK||!walkOK)?'partial_component_qc_exclusion':null):'mobility_setup_not_standardized'}}}
- if(reason)x={...x,measurement_valid_for_analysis:false,baseline_eligible:false,familiarization_countable:false,analysis_exclusion_reason:reason};
- return x
+ if(k==='NDB_cognitive_sessions'&&!reason){
+   const mode=String(x.session_mode||''),cv=x?.component_validity||{},rawC=x?.raw_cognitive||{},rawT=x?.raw_tapping||{};
+   if(mode==='cognitive_rt'&&typeof cv.reaction==='boolean')attested=cv.reaction;
+   else if(mode==='cognitive_gonogo'&&typeof cv.gonogo==='boolean')attested=cv.gonogo;
+   else if(mode==='tapping_touch'&&typeof cv.tapping_touch==='boolean')attested=cv.tapping_touch;
+   else if(mode==='tapping_video'&&typeof cv.tapping_video==='boolean')attested=cv.tapping_video;
+   if(attested===false)reason='core_component_qc_failed';
+   else if(attested!==true){
+     const rt=Array.isArray(rawC.reaction_trials)?rawC.reaction_trials:[],gg=Array.isArray(rawC.gonogo_trials)?rawC.gonogo_trials:[],tapOK=a=>Array.isArray(a)&&a.length>=8&&a.every((t,i)=>Number.isFinite(Number(t))&&Number(t)>=0&&Number(t)<=15000&&(i===0||Number(t)>Number(a[i-1])));
+     let ok=true;
+     if(mode==='cognitive_rt'){
+       const om=Array.isArray(rawC.reaction_omissions)?rawC.reaction_omissions:[];
+       // If old compacted records no longer contain raw trials, preserve an existing validated summary instead of manufacturing a QC failure.
+       if(!rt.length&&!om.length&&Number.isFinite(Number(x.reaction_median_ms)))ok=x.measurement_valid_for_analysis!==false||!String(x.analysis_exclusion_reason||'').includes('core_component_qc_failed');
+       else ok=(rt.length+om.length===20)&&rt.length>=15&&rt.every(t=>Number.isFinite(Number(t?.rt))&&Number(t.rt)>80&&Number(t.rt)<=1500)&&om.every(o=>Number(o?.timeout_ms)===1500)
+     }else if(mode==='cognitive_gonogo'){
+       if(!gg.length&&Number.isFinite(Number(x.gonogo_accuracy)))ok=x.measurement_valid_for_analysis!==false||!String(x.analysis_exclusion_reason||'').includes('core_component_qc_failed');
+       else{const goN=gg.filter(t=>t?.type==='go').length,noN=gg.filter(t=>t?.type==='nogo').length;ok=gg.length===24&&goN===15&&noN===9&&gg.every(t=>['go','nogo'].includes(t?.type)&&typeof t?.correct==='boolean'&&typeof t?.tapped==='boolean'&&(!t.tapped||(Number.isFinite(Number(t?.rt))&&Number(t.rt)>80&&Number(t.rt)<1500)))}
+     }else if(mode==='tapping_touch'){
+       if(!Array.isArray(rawT.right_timestamps_ms)&&Number.isFinite(Number(x.tapping_right_rate))&&Number.isFinite(Number(x.tapping_left_rate)))ok=x.measurement_valid_for_analysis!==false||!String(x.analysis_exclusion_reason||'').includes('core_component_qc_failed');
+       else ok=tapOK(rawT.right_timestamps_ms)&&tapOK(rawT.left_timestamps_ms)
+     }else if(mode==='tapping_video')ok=x?.tapping_video_status==='completed'&&x?.tapping_video_endpoint_usable!==false;
+     else ok=x.measurement_valid_for_analysis!==false;
+     if(!ok)reason='core_component_qc_failed'
+   }
+ }
+ if(k==='NDB_trace_sessions'&&!reason){const pts=Array.isArray(x.raw_points)?x.raw_points:[];if(pts.length){const span=pts.length>1?Number(pts.at(-1)?.[0])-Number(pts[0]?.[0]):0;if(pts.length<120||span<27000)reason='trace_temporal_coverage'}else if(x.measurement_valid_for_analysis===false)reason=x.analysis_exclusion_reason||'trace_qc_failed'}
+ if(k==='NDB_speech_sessions'&&!reason){const m=x?.metrics||{},task=x?.task,d=Number(m.duration_s??0),snr=Number(m.snr_calibrated_db??m.snr_proxy_db),common=d>=2&&Number(m.clipping_pct)<=.5&&m?.audio_qc?.accepted===true&&m?.watchdog?.accepted===true&&Number.isFinite(snr)&&snr>=(task==='vowel'?12:8);let ok=common;if(task==='vowel')ok=ok&&Number(m.accepted_repetition_count)===2&&Number(m.voice_cycle_count)>=40&&Number.isFinite(Number(m.jitter_local_pct))&&Number.isFinite(Number(m.shimmer_local_pct))&&Number.isFinite(Number(m.hnr_cycle_db));else if(task==='pata')ok=ok&&Number(m.count)>=8&&Number(m.accepted_interval_count)>=6&&Number(m.detector_agreement_pct)>=72&&Number.isFinite(Number(m.rate_hz))&&Number.isFinite(Number(m.interval_cv_pct));else if(task==='reading')ok=ok&&m.duration_window_ok===true&&m.reading_completed_by_user===true&&Number(m.speech_span_s)>=8&&Number.isFinite(Number(m.speaking_rate_wpm))&&Number.isFinite(Number(m.pause_ratio_pct));if(!ok)reason='speech_v2_qc_failed'}
+ if(k==='NDB_visual_sessions'&&!reason){const tr=Array.isArray(x.trials)?x.trials:[];if(tr.length){const ok=tr.length===24&&tr.every(t=>Number.isFinite(Number(t?.rt_ms))&&Number(t.rt_ms)>=80&&Number(t.rt_ms)<=15000);if(!ok)reason='visual_timing_or_completion_qc'}else if(x.measurement_valid_for_analysis===false)reason=x.analysis_exclusion_reason||'visual_qc_failed'}
+ if(k==='NDB_sleep_log'&&!reason){const hm=v=>/^([01]\\d|2[0-3]):[0-5]\\d$/.test(String(v||''));const mins=v=>{const [h,m]=String(v).split(':').map(Number);return h*60+m};const lat=Number(x.latency_min??0),awake=Number(x.awake_min??0),awaken=Number(x.awakenings??0),q=Number(x.quality??3);let tib=null;if(hm(x.bedtime)&&hm(x.waketime)){let b=mins(x.bedtime),w=mins(x.waketime);if(w<=b)w+=1440;tib=w-b}if(!(tib>=120&&tib<=960&&lat>=0&&lat<=300&&awake>=0&&awake<=600&&awaken>=0&&awaken<=30&&q>=1&&q<=5))reason='sleep_plausibility_qc'}
+ if(k==='NDB_vitals_log'&&!reason){const s=Number(x.sys),d=Number(x.dia),hr=Number(x.hr),sp=Number(x.spo2);if((Number.isFinite(s)&&(s<60||s>250))||(Number.isFinite(d)&&(d<30||d>160))||(Number.isFinite(hr)&&(hr<20||hr>250))||(Number.isFinite(sp)&&(sp<50||sp>100)))reason='vitals_plausibility_qc'}
+ const valid=!reason;return{...x,measurement_valid_for_analysis:valid,analysis_exclusion_reason:reason,baseline_eligible:valid&&x.familiarization_session!==true&&x.baseline_eligible!==false,qc_attestation:attested===true?'component_validity':(attested===false?'component_invalid':'revalidated_or_preserved')}
 }
 window.NDBRC56ValidateRecord=validRecord;
  const previousSet=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(this===localStorage&&['NDB_cognitive_sessions','NDB_trace_sessions','NDB_speech_sessions','NDB_visual_sessions','NDB_sleep_log','NDB_vitals_log','NDB_physical_log'].includes(String(k))){try{const parsed=JSON.parse(String(v));if(Array.isArray(parsed))v=JSON.stringify(parsed.map(x=>validRecord(String(k),x)))}catch(e){}}return previousSet.call(this,k,v)};
@@ -9283,6 +9233,12 @@ window.NDBRC108RunSourceAudit=run;setTimeout(run,950);
 })();
 </script>
 
-<script id="ndbRC108Release">window.NDB_RELEASE='RC108';window.NDB_VERSION='NDB-RC108';window.NDB_VERSION_PARTICIPANT='NDB-RC108';</script>
+<script id="ndbRC110ValidityRepair">
+(()=>{try{const k='NDB_cognitive_sessions',a=JSON.parse(localStorage.getItem(k)||'[]');if(!Array.isArray(a))return;let changed=0;const next=a.map(x=>{if(!x||x.qa_mode===true||x.test_mode===true)return x;const mode=String(x.session_mode||''),cv=x.component_validity||{},pass=mode==='cognitive_rt'?cv.reaction===true:mode==='cognitive_gonogo'?cv.gonogo===true:mode==='tapping_touch'?cv.tapping_touch===true:mode==='tapping_video'?cv.tapping_video===true:false;if(pass&&x.measurement_valid_for_analysis===false&&x.analysis_exclusion_reason==='core_component_qc_failed'){changed++;const fam=x.familiarization_session===true;return{...x,measurement_valid_for_analysis:true,analysis_exclusion_reason:null,baseline_eligible:!fam&&x.baseline_eligible!==false,qc_attestation:'component_validity_repair_rc110'}}return x});if(changed){localStorage.setItem(k,JSON.stringify(next));window.NDBRC110ValidityRepairCount=changed}}catch(e){console.warn('RC110 validity repair',e)}})();
+</script>
+<script id="ndbRC110StandaloneMetricsNav">
+(()=>{window.openMetricExplorer=function(test=null){const q=new URLSearchParams();if(test)q.set('test',test);location.href='metrics.html'+(q.toString()?'?'+q.toString():'')};})();
+</script>
+<script id="ndbRC110Release">window.NDB_RELEASE='RC110';window.NDB_VERSION='NDB-RC110';window.NDB_VERSION_PARTICIPANT='NDB-RC110';</script>
 </body>
 </html>
