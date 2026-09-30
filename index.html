@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="it"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" name="viewport"/><meta content="#f5f5f7" name="theme-color"/><meta name="ndb-release" content="RC112"><title>Neuro Digital Baseline</title>
+<html lang="it"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" name="viewport"/><meta content="#f5f5f7" name="theme-color"/><meta name="ndb-release" content="RC113"><title>Neuro Digital Baseline</title>
 <style data-inlined-from="css/01-style.css">*{box-sizing:border-box}body{margin:0;background:#f5f5f7;color:#111;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:720px;margin:auto;min-height:100vh;padding:24px}.card{background:#fff;border-radius:26px;padding:26px;box-shadow:0 12px 40px #00000010}h1{font-size:34px;margin:0}.eyebrow{font-size:13px;letter-spacing:.12em;color:#666;font-weight:700}.sub{color:#666;margin:6px 0 24px}button{width:100%;padding:16px;border:0;border-radius:16px;font-size:18px;font-weight:700;background:#111;color:#fff}button.alt{background:#eee;color:#111;margin-top:10px}.arena{height:360px;border-radius:22px;background:#eee;display:grid;place-items:center;text-align:center;touch-action:manipulation;user-select:none}.dot{width:120px;height:120px;background:#111;border-radius:50%}.big{font-size:34px;font-weight:800}.muted{color:#666}.hidden{display:none!important}.progress{margin:0 0 12px;color:#666}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:#f3f3f3;padding:15px;border-radius:16px}.metric b{display:block;font-size:24px;margin-top:4px}.note{font-size:13px;line-height:1.45;color:#666;margin-top:18px}input,select,textarea{width:100%;font-size:18px;padding:13px;border:1px solid #ccc;border-radius:13px;margin:7px 0 18px;background:#fff}
 .senior{font-size:20px}.senior h1{font-size:42px}.senior button{font-size:22px;padding:20px}.senior input,.senior select,.senior textarea{font-size:22px;padding:16px}
 .badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#eee;font-size:12px;font-weight:700;margin:3px 4px 3px 0}
@@ -797,7 +797,8 @@ body.ndb-qa-on .protocol-chip:after{content:" · QA";color:#08796b}
 .vtap-checks{display:grid;gap:7px;margin:14px 0}.vtap-check{display:grid;grid-template-columns:18px 1fr;gap:7px;align-items:start;font-size:10px;color:#5e6e68}.vtap-check i{font-style:normal;color:#238d80;font-weight:900}
 .vtap-actions{display:grid;gap:8px}.vtap-actions button{margin:0!important}.vtap-privacy{margin-top:12px;padding:10px;border-radius:9px;background:#f4f8f6;color:#718079;font-size:9px;line-height:1.5;border:1px solid #e0e9e5}
 .vtap-quality{font-size:10px;color:#60716a;margin-top:8px}
-@media(max-width:760px){.vtap-shell{grid-template-columns:1fr}.vtap-camera{min-height:320px}}</style>
+@media(max-width:760px){.vtap-shell{grid-template-columns:1fr}.vtap-camera{min-height:320px}}
+</style>
 <meta content="RC58 final audit build" name="ndb-build"/>
 <style id="ndbRC39VisualPolish">
 /* RC39 — visual polish only. Scientific protocols, metrics and persistence logic unchanged. */
@@ -997,7 +998,6 @@ input:focus,select:focus,textarea:focus{border-color:#53a69c!important;box-shado
 input[type="checkbox"],input[type="radio"]{accent-color:var(--rc40-teal);width:18px!important;height:18px!important;min-height:0!important;box-shadow:none!important}
 select{background-image:linear-gradient(45deg,transparent 50%,#688078 50%),linear-gradient(135deg,#688078 50%,transparent 50%)!important;background-position:calc(100% - 16px) 52%,calc(100% - 11px) 52%!important;background-size:5px 5px,5px 5px!important;background-repeat:no-repeat!important;padding-right:34px!important;appearance:none;-webkit-appearance:none}
 textarea{line-height:1.55}
-
 /* Generic workspace cards */
 section:not(#about):not(#home){border-color:var(--rc40-line)!important;border-radius:22px!important;box-shadow:var(--rc40-shadow-md)!important}
 section:not(#about):not(#home):before{pointer-events:none}
@@ -1596,7 +1596,8 @@ body.ndb47-trace-focus .trace-side{top:20px!important;padding:16px;border:1px so
 <section class="ov-insight" id="ov-how">
 <h2>Dai dati alla comprensione</h2>
 <div class="ov-steps">
-<article><span>▥</span><p><b>1. Raccogli</b><small>Test e misurazioni<br/>standardizzati e ripetibili</small></p></article><i>→</i><article><span>⌘</span><p><b>2. Analizza</b><small>Confronta con la tua<br/>baseline personale</small></p></article><i>→</i>
+<article><span>▥</span><p><b>1. Raccogli</b><small>Test e misurazioni<br/>standardizzati e ripetibili</small></p></article><i>→</i>
+<article><span>⌘</span><p><b>2. Analizza</b><small>Confronta con la tua<br/>baseline personale</small></p></article><i>→</i>
 <article><span>♙</span><p><b>3. Comprendi</b><small>Esplora i cambiamenti rilevanti<br/>tra i diversi domini</small></p></article><i>→</i>
 <article><span>◎</span><p><b>4. Valuta</b><small>Interpreta i pattern nel contesto;<br/>non come diagnosi</small></p></article>
 </div>
@@ -1995,8 +1996,7 @@ ferritin | ng/mL | 20 | 200" rows="4" style="width:100%;box-sizing:border-box;fo
 <div class="metric">Tapping destra / sinistra<b id="r_tap_lr">—</b><small>tocchi/s</small></div>
 <div class="metric">Variabilità del timing<b id="r_tap_cv">—</b><small>CV medio inter-tap</small></div>
 <div class="metric">Asimmetria di frequenza<b id="r_tap_asym">—</b><small>|D−S| / lato più rapido</small></div><div class="metric">Variazione tra le due metà<b id="r_tap_half">—</b><small>secondi 7,5 s vs primi 7,5 s</small></div>
-<div class="metric">Pause/esitazioni proxy (ITI lungo)<b id="r_tap_pause">—</b><small>eventi ITI lunghi D / S</small></div>
-<div class="metric">Trend progressivo della velocità<b id="r_tap_slope">—</b><small>pendenza D / S per finestre di 3 s</small></div>
+<div class="metric">Pause/esitazioni proxy (ITI lungo)<b id="r_tap_pause">—</b><small>eventi ITI lunghi D / S</small></div><div class="metric">Trend progressivo della velocità<b id="r_tap_slope">—</b><small>pendenza D / S per finestre di 3 s</small></div>
 <div class="metric">Ampiezza movimento video D / S<b id="r_vtap_amp">—</b><small>escursione normalizzata</small></div><div class="metric">Decremento ampiezza video D / S<b id="r_vtap_dec">—</b><small>positivo = apertura finale minore</small></div><div class="metric">Qualità tracking video<b id="r_vtap_quality">—</b><small>canale esplorativo</small></div><div class="metric">Accuratezza Go/No-Go<b id="r_gg">—</b></div><div class="metric">Mediana RT Go<b id="r_ggrt">—</b></div>
 </div><button class="alt" onclick="exportCSV()">ESPORTA DATI RAW</button><button class="alt" onclick="openHome()">RACCOLTA DATI</button></section>
 </div></main><script data-inlined-from="js/01-const-x-document-getelementbyid-x-hideall-document-q.js">
@@ -2317,7 +2317,7 @@ function deviceSignature(){
 }
 function sessionTechnicalMetadata(mode){
  return {
-  app_version:"NDB-RC112",
+  app_version:"NDB-RC111",
   session_mode:mode||sessionMode||"",
   local_date:localDateISO(),
   local_time:new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",second:"2-digit"}),
@@ -2346,7 +2346,7 @@ function exportResearchDataset(){
  let sessions=ndbParseStored("NDB_cognitive_sessions",[]);
  let dataset={
   format:"NDB-RESEARCH-DATASET-1",
-  app_version:"NDB-RC112",
+  app_version:"NDB-RC111",
   exported_at:new Date().toISOString(),
   participant_profile:ndbParseStored("NDB_profile",{}),
   cognitive_motor_memory_sessions:sessions,
@@ -2395,6 +2395,7 @@ function confirmDeleteAll(){
  try{indexedDB.deleteDatabase('NDB_Frame_Traces_v1')}catch(e){}
  location.reload();
 }
+
 function isAttualeTappingProtocol(x){
  if(!x)return false;
  const f=String(x.form_id||"");
@@ -2994,8 +2995,7 @@ function drawLineChart(id,labels,values,opts={}){
    let n=full.length;if(!n){drawLineChartFrame(id,labels,full,opts);return}
    let pos=eased*Math.max(0,n-1),whole=Math.floor(pos),frac=pos-whole;
    let shown=full.map((v,i)=>i<=whole?v:NaN);
-   if(whole<n-1&&Number.isFinite(full[whole])&&Number.isFinite(full[whole+1]))shown[whole+1]=full[whole]+(full[whole+1]-full[whole])*frac;
-   drawLineChartFrame(id,labels,shown,{...opts,_animating:t<1});
+   if(whole<n-1&&Number.isFinite(full[whole])&&Number.isFinite(full[whole+1]))shown[whole+1]=full[whole]+(full[whole+1]-full[whole])*frac;   drawLineChartFrame(id,labels,shown,{...opts,_animating:t<1});
    if(t<1)c._ndbAnim=requestAnimationFrame(tick);
    else {c._ndbAnim=null;drawLineChartFrame(id,labels,full,opts)}
  }
@@ -3194,7 +3194,8 @@ function tappingFeatures(times,duration=15,pressures=[]){
  let t=(times||[]).map(Number).filter(Number.isFinite).sort((a,b)=>a-b);
  let rate=t.length/duration;
  let iti=[];for(let i=1;i<t.length;i++)iti.push(t[i]-t[i-1]);
- let itiMed=iti.length?median(iti):null,itiMean=iti.length?mean(iti):null,itiSD=iti.length>1?sd(iti):null; let cv=itiMean>0?100*itiSD/itiMean:null;
+ let itiMed=iti.length?median(iti):null,itiMean=iti.length?mean(iti):null,itiSD=iti.length>1?sd(iti):null;
+ let cv=itiMean>0?100*itiSD/itiMean:null;
 
  // First/second half: direct fatigue/sequence-effect descriptor.
  let firstHalf=t.filter(x=>x<7500).length/7.5,secondHalf=t.filter(x=>x>=7500&&x<=15000).length/7.5;
@@ -3580,9 +3581,9 @@ function finish(){
     gonogo_trials:(data.gonogo||[]).map(x=>({...x}))
   }:null,
   form_id:sessionMode==="tapping_touch"?"TAP:v10.2-touchscreen-bilateral15s-countdown3s":
-          sessionMode==="tapping_video"?"TAPVIDEO:v18.1-rc112-adaptive-hysteresis-qc-safe":
+          sessionMode==="tapping_video"?"TAPVIDEO:v18.0-rc111-hysteresis-evidence-preserving":
           `COG:v12.0|MODE:${sessionMode}|RT20_TIMEOUT1500|GG24_SDT:${ggRule?ggRule.go+">"+ggRule.nogo:""}`,
-  app_version:"NDB-RC112",qa_mode:isQAMode()
+  app_version:"NDB-RC111",qa_mode:isQAMode()
  };
  const existing=hist.findIndex(x=>x&&x.id===cog.id);if(existing>=0)hist[existing]=cog;else hist.push(cog);
  try{
@@ -3594,7 +3595,7 @@ function finish(){
   alert("Errore durante il salvataggio locale: "+(err?.message||err)+". I dati non sono stati persi dalla sessione corrente: libera spazio del browser e riprova.");
   throw err;
  }
- try{localStorage.setItem("NDB_last_session",JSON.stringify({...data,session_mode:sessionMode,app_version:"NDB-RC112",session_metadata:sessionTechnicalMetadata(sessionMode)}));}catch(e){console.warn("NDB last-session cache unavailable",e)}
+ try{localStorage.setItem("NDB_last_session",JSON.stringify({...data,session_mode:sessionMode,app_version:"NDB-RC111",session_metadata:sessionTechnicalMetadata(sessionMode)}));}catch(e){console.warn("NDB last-session cache unavailable",e)}
  if(window.NDBCoreFlow?.active)return cog;
  returnToDataCollection(sessionMode);return cog;
 }
@@ -4792,7 +4793,8 @@ function open(){
   const q=indexedDB.open(DB,VER);
   q.onupgradeneeded=()=>{const db=q.result;if(!db.objectStoreNames.contains(STORE))db.createObjectStore(STORE,{keyPath:'id'})};
   q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error||Error('Apertura IndexedDB fallita'));
- })}
+ })
+}
 async function tx(mode,fn){
  const db=await open();
  try{return await new Promise((resolve,reject)=>{
@@ -4816,7 +4818,7 @@ window.NDBFrameStore={put,get,remove,clear,list,db:DB,store:STORE};
    No Watchdog and no classifier-confidence veto. Raw video is never stored. */
 const NDBVideoTapping=(()=>{
 'use strict';
-const PROTOCOL='NDB-VIDEO-TAPPING:v10.2-rc112-adaptive-hysteresis-qc-safe';
+const PROTOCOL='NDB-VIDEO-TAPPING:v11.1-rc113-trial-adaptive-snr';
 const DURATION=15000,CAL_MS=7000;
 const E=id=>document.getElementById(id);
 const finite=v=>v!==null&&v!==undefined&&v!==''&&typeof v!=='boolean'&&Number.isFinite(Number(v));
@@ -4880,7 +4882,7 @@ async function pumpFrameQueue(){
  if(busy||!frameQueue.length)return;
  const job=frameQueue.shift();pendingJob=job;busy=true;pendingFrameAt=job.sourceAt;
  try{await ensureHands();await hands.send({image:job.image});handErrors=0}
- catch(e){busy=false;pendingJob=null;closeImage(job.image);if(job.cap){job.cap.pending_jobs=Math.max(0,job.cap.pending_jobs-1);job.cap.inference_errors++}handErrors++;console.warn('RC112 tapping queued frame error',e);setTimeout(pumpFrameQueue,0)}
+ catch(e){busy=false;pendingJob=null;closeImage(job.image);if(job.cap){job.cap.pending_jobs=Math.max(0,job.cap.pending_jobs-1);job.cap.inference_errors++}handErrors++;console.warn('RC90 tapping queued frame error',e);setTimeout(pumpFrameQueue,0)}
 }
 async function enqueueCapturedFrame(now,meta){
  const v=E('vtapVideo'),cap=activeCapture;if(!cap||v?.readyState<2)return;
@@ -4901,7 +4903,7 @@ async function enqueueCapturedFrame(now,meta){
  try{
    const img=await createImageBitmap(v);const job={cap,sourceAt,image:img,direct:false,seq:sourceSeq};
    cap.snapshots_pending--;snapshotPending--;cap.attempted++;cap.pending_jobs++;frameQueue.push(job);frameQueue.sort((a,b)=>a.seq-b.seq);cap.queue_peak=Math.max(cap.queue_peak,frameQueue.length);pumpFrameQueue()
- }catch(e){cap.snapshots_pending--;snapshotPending--;cap.software_dropped_frames++;console.warn('RC112 createImageBitmap failed',e)}
+ }catch(e){cap.snapshots_pending--;snapshotPending--;cap.software_dropped_frames++;console.warn('RC90 createImageBitmap failed',e)}
 }
 function rowFromLandmarks(lm,t,label,score,expected,latency,rawLm=null){
  const F=palmLocal21(lm),R=palmLocal21(rawLm||lm);if(!F)return null;const L=F.local,RL=R?.local||L,th=L[4],ix=L[8],dx=ix.x-th.x,dy=ix.y-th.y,dz=ix.z-th.z,
@@ -4912,7 +4914,7 @@ function rowFromLandmarks(lm,t,label,score,expected,latency,rawLm=null){
 }
 function onResults(res){
  const job=pendingJob;pendingJob=null;busy=false;const cap=job?.cap||null,expected=cap?.side||side,pick=selectHand(res,expected),now=performance.now();
- if(cap){cap.processed_frames++;cap.pending_jobs=Math.max(0,cap.pending_jobs-1);if(pick){const filtered=filterLandmarks(pick.lm,expected,job.sourceAt),r=rowFromLandmarks(filtered,job.sourceAt-cap.start,pick.label,pick.score,expected,now-job.sourceAt,pick.lm);if(r){r.capture_clock='queued_source_frame';cap.rows.push(r);cap.tracked++;const cal=sideCalibration[expected],recent=cap.rows.slice(-90).map(x=>x.opening).filter(finite),q12=recent.length>=12?quant(recent,.12):null,q88=recent.length>=12?quant(recent,.88):null,rr=finite(q12)&&finite(q88)?Math.max(.008,q88-q12):null,trialClose=finite(rr)?q12+.36*rr:null,calClose=finite(cal?.close_threshold_norm)?Number(cal.close_threshold_norm):(finite(cal?.closed_reference_norm)&&finite(cal?.open_reference_norm)?Number(cal.closed_reference_norm)+.35*(Number(cal.open_reference_norm)-Number(cal.closed_reference_norm)):null),close=finite(rr)?clamp(finite(calClose)?.45*calClose+.55*trialClose:trialClose,q12+.20*rr,q12+.50*rr):calClose;draw(filtered,{side:expected,opening:r.opening,contact:finite(close)?r.opening<=close:false})}else draw(pick.lm,{side:expected,opening:null,contact:false})}}
+ if(cap){cap.processed_frames++;cap.pending_jobs=Math.max(0,cap.pending_jobs-1);if(pick){const filtered=filterLandmarks(pick.lm,expected,job.sourceAt),r=rowFromLandmarks(filtered,job.sourceAt-cap.start,pick.label,pick.score,expected,now-job.sourceAt,pick.lm);if(r){r.capture_clock='queued_source_frame';cap.rows.push(r);cap.tracked++;const cal=sideCalibration[expected],close=finite(cal?.close_threshold_norm)?Number(cal.close_threshold_norm):(finite(cal?.closed_reference_norm)&&finite(cal?.open_reference_norm)?Number(cal.closed_reference_norm)+.35*(Number(cal.open_reference_norm)-Number(cal.closed_reference_norm)):null);draw(filtered,{side:expected,opening:r.opening,contact:finite(close)?r.opening<=close:false})}else draw(pick.lm,{side:expected,opening:null,contact:false})}}
  else if(pick)draw(pick.lm,{side:expected,opening:null,contact:false});
  if(job&&!job.direct)closeImage(job.image);setTimeout(pumpFrameQueue,0)
 }
@@ -4990,16 +4992,25 @@ function extrema(grid,periodMs){const p=periodMs||350,rad=Math.max(2,Math.round(
 function localMaxIndex(grid,a,b){let bi=-1,bv=-Infinity;for(let i=Math.max(0,a);i<=Math.min(grid.length-1,b);i++){const v=grid[i].opening_s;if(finite(v)&&v>bv){bv=v;bi=i}}return bi}
 function localMinIndex(grid,a,b){let bi=-1,bv=Infinity;for(let i=Math.max(0,a);i<=Math.min(grid.length-1,b);i++){const v=grid[i].opening_s;if(finite(v)&&v<bv){bv=v;bi=i}}return bi}
 function detectCycles(raw,cal=null,expectedSide=side,expectedDurationMs=DURATION){
- const pre=preprocess(raw,expectedDurationMs),g=pre.grid;if(g.length<8)return{accepted:[],rejected:[],candidates:[],pre,period:null,recovered:0,method:'hysteresis+extrema_v10'};
- const series=g.map(r=>r.opening_s).filter(finite),trialOpen=quant(series,.88),trialClose=quant(series,.12),trialRange=Math.max(.008,Number(trialOpen)-Number(trialClose)),calOpen=Number(cal?.open_reference_norm),calClose=Number(cal?.closed_reference_norm),
- calCloseTh=Number(cal?.close_threshold_norm),calOpenTh=Number(cal?.open_threshold_norm),trialCloseTh=Number(trialClose)+.34*trialRange,trialOpenTh=Number(trialClose)+.68*trialRange,
- // Calibration is a prior, not a veto: thresholds stay inside the range actually observed in this trial.
- closeTh=clamp(finite(calCloseTh)?(.45*calCloseTh+.55*trialCloseTh):trialCloseTh,Number(trialClose)+.20*trialRange,Number(trialClose)+.48*trialRange),
- openTh=clamp(finite(calOpenTh)?(.45*calOpenTh+.55*trialOpenTh):trialOpenTh,Number(trialClose)+.55*trialRange,Number(trialClose)+.82*trialRange),
- openRef=finite(calOpen)?(.35*calOpen+.65*trialOpen):trialOpen,closeRef=finite(calClose)?(.35*calClose+.65*trialClose):trialClose,range=trialRange;
- const residual=[];for(const q of pre.rows){if(finite(q.opening)){const near=g.reduce((best,r)=>Math.abs(r.t-q.t)<Math.abs(best.t-q.t)?r:best,g[0]);if(finite(near?.opening_s))residual.push(Number(q.opening)-Number(near.opening_s))}}
- const rm=median(residual)||0,noise=1.4826*(median(residual.map(x=>Math.abs(x-rm)))||0),calAmp=Number(cal?.amplitude_median_norm),
- noiseFloor=Math.min(.28*range,1.8*noise),calibrationFloor=finite(calAmp)?Math.min(.10,Math.max(.004,.10*calAmp)):0,minAmp=Math.max(.005,.06*range,noiseFloor,calibrationFloor),candidate=[];
+ const pre=preprocess(raw,expectedDurationMs),g=pre.grid;if(g.length<8)return{accepted:[],rejected:[],candidates:[],pre,period:null,recovered:0,method:'trial-adaptive-hysteresis_v11'};
+ const series=g.map(r=>r.opening_s).filter(finite);if(series.length<8)return{accepted:[],rejected:[],candidates:[],pre,period:null,recovered:0,method:'trial-adaptive-hysteresis_v11'}; // Trial geometry is authoritative. Calibration is a weak prior only; it must never force
+ // the trial to reproduce the same movement amplitude.
+ const q05=quant(series,.05),q12=quant(series,.12),q50=quant(series,.50),q88=quant(series,.88),q95=quant(series,.95),
+ trialClose=finite(q12)?q12:q05,trialOpen=finite(q88)?q88:q95,trialRange=Math.max(.004,Number(trialOpen)-Number(trialClose)),
+ calOpen=Number(cal?.open_reference_norm),calClose=Number(cal?.closed_reference_norm),calRange=finite(calOpen)&&finite(calClose)?Math.max(.004,calOpen-calClose):null;
+ // Very small stabilising prior (10%) only if the calibration range is broadly compatible.
+ // Large amplitude changes between calibration and trial are deliberately allowed.
+ const ratio=finite(calRange)&&trialRange>0?trialRange/calRange:null,compatiblePrior=finite(ratio)&&ratio>=.45&&ratio<=2.2,
+ closeRef=compatiblePrior?.90*trialClose+.10*calClose:trialClose,
+ openRef=compatiblePrior?.90*trialOpen+.10*calOpen:trialOpen,
+ range=Math.max(.004,openRef-closeRef),closeTh=closeRef+.38*range,openTh=closeRef+.64*range;
+ // Estimate technical jitter from raw-vs-smoothed residuals. Movement amplitude itself is not noise.
+ const residual=[];for(const q of pre.rows){if(!finite(q.opening))continue;let lo=0,hi=g.length-1;while(lo<hi){const mid=(lo+hi)>>1;if(g[mid].t<q.t)lo=mid+1;else hi=mid}const a=g[Math.max(0,lo-1)],b=g[Math.min(g.length-1,lo)],near=!a?b:!b?a:(Math.abs(a.t-q.t)<=Math.abs(b.t-q.t)?a:b);if(finite(near?.opening_s))residual.push(Number(q.opening)-Number(near.opening_s))}
+ const rm=median(residual)||0,noise=1.4826*(median(residual.map(x=>Math.abs(x-rm)))||0),
+ calAmp=Number(cal?.amplitude_median_norm),
+ // Evidence floor is driven by trial SNR. Calibration contributes only a capped weak floor.
+ weakCalFloor=finite(calAmp)?Math.min(.12*calAmp,.18*trialRange):0,
+ minAmp=Math.max(.0035,.07*trialRange,Math.min(.30*trialRange,2.2*noise),weakCalFloor),candidate=[];
  let state='open',openIdx=null,minIdx=null,minVal=Infinity;
  const localMax=(a,b)=>{let bi=-1,bv=-Infinity;for(let i=Math.max(0,a);i<=Math.min(g.length-1,b);i++)if(finite(g[i].opening_s)&&g[i].opening_s>bv){bv=g[i].opening_s;bi=i}return bi};
  for(let i=0;i<g.length;i++){
@@ -5009,17 +5020,34 @@ function detectCycles(raw,cal=null,expectedSide=side,expectedDurationMs=DURATION
      if(openIdx!=null&&y<=closeTh){state='closed';minIdx=i;minVal=y}
    }else{
      if(y<minVal){minVal=y;minIdx=i}
-     if(y>=openTh){const li=localMax(Math.max(0,(openIdx??minIdx)-3),minIdx-1),ri=localMax(minIdx+1,i+3);if(li>=0&&ri>=0){const amp=((g[li].opening_s-minVal)+(g[ri].opening_s-minVal))/2,local=g.slice(li,ri+1),validFrac=local.length?local.filter(r=>r.valid).length/local.length:0,handFrac=local.length?local.filter(r=>r.hand_match).length/local.length:0,closeMs=g[minIdx].t-g[li].t,openMs=g[ri].t-g[minIdx].t,phaseOK=closeMs>=20&&openMs>=20&&closeMs<=2500&&openMs<=2500,complete=phaseOK&&amp>=minAmp&&validFrac>=.82;const quality=clamp(.48*clamp(amp/(Math.max(minAmp,range*.28)),0,1)+.42*validFrac+.10*handFrac,0,1);candidate.push({i:minIdx,t_ms:g[minIdx].t,open_before_norm:g[li].opening_s,close_norm:minVal,open_after_norm:g[ri].opening_s,amplitude_norm:amp,closing_ms:closeMs,opening_ms:openMs,local_tracking_fraction:validFrac,hand_match_fraction:handFrac,quality_score:quality,recovered:false,complete})}state='open';openIdx=i;minIdx=null;minVal=Infinity}
+     if(y>=openTh){
+       const li=localMax(Math.max(0,(openIdx??minIdx)-3),minIdx-1),ri=localMax(minIdx+1,i+3);
+       if(li>=0&&ri>=0){
+         const amp=((g[li].opening_s-minVal)+(g[ri].opening_s-minVal))/2,local=g.slice(li,ri+1),validFrac=local.length?local.filter(r=>r.valid).length/local.length:0,
+         handFrac=local.length?local.filter(r=>r.hand_match).length/local.length:0,closeMs=g[minIdx].t-g[li].t,openMs=g[ri].t-g[minIdx].t,
+         phaseOK=closeMs>=18&&openMs>=18&&closeMs<=2500&&openMs<=2500,complete=phaseOK&&amp>=minAmp&&validFrac>=.80,
+         snr=noise>1e-6?amp/noise:99,quality=clamp(.42*clamp(amp/Math.max(minAmp,trialRange*.24),0,1)+.38*validFrac+.10*handFrac+.10*clamp(snr/5,0,1),0,1);
+         candidate.push({i:minIdx,t_ms:g[minIdx].t,open_before_norm:g[li].opening_s,close_norm:minVal,open_after_norm:g[ri].opening_s,amplitude_norm:amp,closing_ms:closeMs,opening_ms:openMs,local_tracking_fraction:validFrac,hand_match_fraction:handFrac,snr,quality_score:quality,recovered:false,complete})
+       }
+       state='open';openIdx=i;minIdx=null;minVal=Infinity
+     }
    }
  }
- // Rescue only evidence-rich local minima not already captured; never infer a cycle from cadence alone.
- const step=pre.step||33.3;for(let i=2;i<g.length-2;i++){if(!finite(g[i].opening_s)||!(g[i].opening_s<=g[i-1].opening_s&&g[i].opening_s<g[i+1].opening_s)||candidate.some(c=>Math.abs(c.i-i)<=Math.max(2,Math.round(90/step))))continue;const rad=Math.max(3,Math.round(280/step)),li=localMax(i-rad,i-1),ri=localMax(i+1,i+rad);if(li<0||ri<0)continue;const min=g[i].opening_s,amp=((g[li].opening_s-min)+(g[ri].opening_s-min))/2;if(!(min<=closeTh*1.05&&g[li].opening_s>=openTh*.95&&g[ri].opening_s>=openTh*.95&&amp>=minAmp*1.10))continue;const local=g.slice(li,ri+1),validFrac=local.length?local.filter(r=>r.valid).length/local.length:0;if(validFrac<.88)continue;candidate.push({i,t_ms:g[i].t,open_before_norm:g[li].opening_s,close_norm:min,open_after_norm:g[ri].opening_s,amplitude_norm:amp,closing_ms:g[i].t-g[li].t,opening_ms:g[ri].t-g[i].t,local_tracking_fraction:validFrac,hand_match_fraction:local.length?local.filter(r=>r.hand_match).length/local.length:0,quality_score:clamp(.52*amp/(Math.max(minAmp,range*.30))+.48*validFrac,0,1),recovered:true,complete:true})}
- candidate.sort((a,b)=>a.t_ms-b.t_ms);const ded=[];for(const c of candidate){if(!ded.length||c.t_ms-ded.at(-1).t_ms>70)ded.push(c);else if(c.quality_score>ded.at(-1).quality_score)ded[ded.length-1]=c}
+ // Evidence-based rescue: local minimum + reopening on both sides. Cadence is never used to invent a cycle.
+ const step=pre.step||33.3;for(let i=2;i<g.length-2;i++){
+   if(!finite(g[i].opening_s)||!(g[i].opening_s<=g[i-1].opening_s&&g[i].opening_s<g[i+1].opening_s)||candidate.some(c=>Math.abs(c.i-i)<=Math.max(2,Math.round(80/step))))continue;
+   const rad=Math.max(3,Math.round(300/step)),li=localMax(i-rad,i-1),ri=localMax(i+1,i+rad);if(li<0||ri<0)continue;
+   const mn=g[i].opening_s,amp=((g[li].opening_s-mn)+(g[ri].opening_s-mn))/2,local=g.slice(li,ri+1),validFrac=local.length?local.filter(r=>r.valid).length/local.length:0,
+   localOpen=Math.min(g[li].opening_s,g[ri].opening_s),snr=noise>1e-6?amp/noise:99;
+   if(!(mn<=closeTh+0.08*trialRange&&localOpen>=openTh-0.08*trialRange&&amp>=minAmp*1.02&&validFrac>=.85&&snr>=2.0))continue;
+   candidate.push({i,t_ms:g[i].t,open_before_norm:g[li].opening_s,close_norm:mn,open_after_norm:g[ri].opening_s,amplitude_norm:amp,closing_ms:g[i].t-g[li].t,opening_ms:g[ri].t-g[i].t,local_tracking_fraction:validFrac,hand_match_fraction:local.length?local.filter(r=>r.hand_match).length/local.length:0,snr,quality_score:clamp(.48*amp/Math.max(minAmp,trialRange*.26)+.42*validFrac+.10*clamp(snr/5,0,1),0,1),recovered:true,complete:true})
+ }
+ candidate.sort((a,b)=>a.t_ms-b.t_ms);const ded=[];for(const c of candidate){if(!ded.length||c.t_ms-ded.at(-1).t_ms>Math.max(55,1.6*step))ded.push(c);else if(c.quality_score>ded.at(-1).quality_score)ded[ded.length-1]=c}
  const accepted=ded.filter(c=>c.complete),rejected=ded.filter(c=>!c.complete).map(c=>({...c,metric_censored:true})),ivs=[];for(let i=1;i<accepted.length;i++)ivs.push(accepted[i].t_ms-accepted[i-1].t_ms);
  const observedPeriod=ivs.length?median(ivs):null,signalPeriod=estimatePeriod(g,pre.step);
- return{accepted,rejected,candidates:ded,pre,period:{ms:observedPeriod,correlation:null},signal_period:signalPeriod,
-   recovered:accepted.filter(x=>x.recovered).length,range,promFloor:minAmp,signal_noise_estimate:noise,
-   thresholds:{close:closeTh,open:openTh,closed_reference:closeRef,open_reference:openRef,trial_close:trialClose,trial_open:trialOpen,trial_range:trialRange,calibration_amplitude_floor:calibrationFloor},method:'adaptive_hysteresis+extrema_v10.2'}
+ return{accepted,rejected,candidates:ded,pre,period:{ms:observedPeriod,correlation:null},signal_period:signalPeriod,recovered:accepted.filter(x=>x.recovered).length,
+   range:trialRange,promFloor:minAmp,signal_noise_estimate:noise,amplitude_ratio_vs_calibration:finite(ratio)?ratio:null,
+   thresholds:{close:closeTh,open:openTh,trial_closed_reference:trialClose,trial_open_reference:trialOpen,calibration_prior_used:compatiblePrior},method:'trial-adaptive-hysteresis_v11'}
 }
 function buildCalibration(rows,attempted,tracked,expectedSide){
  const det=detectCycles(rows,null,expectedSide,CAL_MS),amps=det.accepted.map(x=>x.amplitude_norm),ivs=[];for(let i=1;i<det.accepted.length;i++)ivs.push(det.accepted[i].t_ms-det.accepted[i-1].t_ms);
@@ -5048,7 +5076,7 @@ function derive(rows,attempted,tracked,cal=null,expectedSide=side){
  detectionCoverageIndependent=expectedIndependent?clamp(100*ev.length/expectedIndependent,0,100):null,
  temporalSpan=ev.length>1?100*eventSpan/observedSpan:0,
  rateConcordance=finite(rateSpan)&&finite(rateInterval)&&Math.max(rateSpan,rateInterval)>0?100*Math.abs(rateSpan-rateInterval)/Math.max(rateSpan,rateInterval):null,
- rate=finite(rateSpan)?rateSpan:rateInterval,amps=ev.map(x=>x.amplitude_norm),halfT=(tStart+tEnd)/2,
+ rate=finite(rateSpan)?rateSpan:rateInterval,amps=ev.map(x=>x.amplitude_norm),eventSnrMedian=median(ev.map(x=>x.snr).filter(finite)),eventSnrMean=mean(ev.map(x=>x.snr).filter(finite)),halfT=(tStart+tEnd)/2,
  first=ev.filter(x=>x.t_ms<halfT),second=ev.filter(x=>x.t_ms>=halfT),a1=median(first.map(x=>x.amplitude_norm)),a2=median(second.map(x=>x.amplitude_norm)),
  ampDec=finite(a1)&&a1>0&&finite(a2)?100*(a1-a2)/a1:null,dur1=Math.max(.001,(halfT-tStart)/1000),dur2=Math.max(.001,(tEnd-halfT)/1000),
  r1=first.length/dur1,r2=second.length/dur2,rateChange=finite(r1)&&r1>0&&finite(r2)?100*(r2-r1)/r1:null,instT=[],instR=[];
@@ -5062,10 +5090,11 @@ function derive(rows,attempted,tracked,cal=null,expectedSide=side){
  reasons=[tracking<70?'tracking_low':null,nativeHz<10?'sampling_low':null,temporal<85?'continuous_trace_coverage_low':null,
    (finite(maxGap)&&maxGap>240)?'tracking_gap_large':null,ev.length<3?'too_few_observed_cycles':null,!finite(rate)?'rate_unavailable':null,
    (finite(rate)&&(rate<.15||rate>10))?'rate_implausible':null,temporalSpan<45?'cycle_temporal_span_low':null,
-   (finite(rateConcordance)&&rateConcordance>45)?'observed_rate_estimators_disagree':null].filter(Boolean),
+   (finite(rateConcordance)&&rateConcordance>45)?'observed_rate_estimators_disagree':null,
+   (finite(eventSnrMedian)&&eventSnrMedian<2.6)?'event_signal_to_noise_low':null].filter(Boolean),
  endpoint=reasons.length===0,
  strict=endpoint&&tracking>=90&&nativeHz>=12&&temporal>=95&&(!finite(maxGap)||maxGap<=200)&&ev.length>=8&&temporalSpan>=70&&
-   (!finite(rateConcordance)||rateConcordance<=25)&&(!finite(detectionCoverageIndependent)||independentCorr<.45||detectionCoverageIndependent>=55)&&(!cal||cal.valid===true);
+   (!finite(rateConcordance)||rateConcordance<=25)&&(!finite(eventSnrMedian)||eventSnrMedian>=3.5)&&(!finite(detectionCoverageIndependent)||independentCorr<.45||detectionCoverageIndependent>=55)&&(!cal||cal.valid===true);
  return{valid:endpoint,endpoint_usable:endpoint,strict_valid:strict,validity_reasons:reasons,
    tracking_pct:+tracking.toFixed(1),native_frame_count:rows.length,analysis_frame_count:grid.filter(x=>x.valid).length,
    analysis_attempt_hz:attempted?+(attempted/(DURATION/1000)).toFixed(2):null,native_tracking_hz:+nativeHz.toFixed(2),effective_tracking_hz:+nativeHz.toFixed(2),sample_hz:+nativeHz.toFixed(2),
@@ -5083,6 +5112,7 @@ function derive(rows,attempted,tracked,cal=null,expectedSide=side){
    independent_cycle_detection_coverage_pct:finite(detectionCoverageIndependent)?+detectionCoverageIndependent.toFixed(1):null,
    cycle_temporal_span_pct:+temporalSpan.toFixed(1),rate_span_hz:finite(rateSpan)?+rateSpan.toFixed(4):null,rate_interval_hz:finite(rateInterval)?+rateInterval.toFixed(4):null,
    rate_window_hz:+rateWindow.toFixed(4),rate_estimator_disagreement_pct:finite(rateConcordance)?+rateConcordance.toFixed(1):null,
+   event_snr_median:finite(eventSnrMedian)?+eventSnrMedian.toFixed(2):null,event_snr_mean:finite(eventSnrMean)?+eventSnrMean.toFixed(2):null,
    recovered_cycle_candidate_count:det.recovered,estimated_expected_cycle_count:finite(expectedIndependent)?expectedIndependent:expectedObserved,
    cycle_rate_hz:finite(rate)?+Number(rate).toFixed(4):null,mean_amplitude_norm:finite(mean(amps))?+mean(amps).toFixed(5):null,
    median_amplitude_norm:finite(median(amps))?+median(amps).toFixed(5):null,amplitude_decrement_pct:finite(ampDec)?+ampDec.toFixed(2):null,
@@ -5138,12 +5168,12 @@ async function startTrial(){
   E('vtapQuality').textContent=`Tracking ${feat.tracking_pct}% · ${feat.cycle_count} cicli osservati · copertura cicli ${feat.cycle_detection_coverage_pct}% · span ${feat.cycle_temporal_span_pct}% · ${feat.cycle_rate_hz??'—'} Hz · drop ${cap.software_dropped_frames}`;
   if(!feat.endpoint_usable){E('vtapStatus').textContent=`Segnale tracciato ma detector non affidabile: ${(feat.validity_reasons||[]).join(', ')}. Nessun rate viene stimato da cicli non osservati: ripeti questa mano.`;E('vtapStart').disabled=false;E('vtapSkip').disabled=false;E('vtapStart').textContent='RIPETI';return}
   if(side==='right'){side='left';lastCenter=null;E('vtapStatus').textContent='Mano destra acquisita e verificata. Prepara la sinistra.';uiForSide()}else await finishVideo()
- }catch(e){console.error('RC112 video tapping',e);E('vtapStatus').textContent=String(e?.message||e);E('vtapStart').disabled=false;E('vtapSkip').disabled=false}
+ }catch(e){console.error('RC113 video tapping',e);E('vtapStatus').textContent=String(e?.message||e);E('vtapStart').disabled=false;E('vtapSkip').disabled=false}
 }
 async function finishVideo(){
  const features=aggregate(),traceId='video_tapping:'+((data?.id)||Date.now())+':'+Date.now(),tracePayload={type:'video_tapping',protocol:PROTOCOL,created_at:new Date().toISOString(),format:data.video_tapping?.trace3d_format,filter:{type:'OneEuro',minCutoffXY:1.7,minCutoffZ:1.25,betaXY:.04,betaZ:.025,dCutoff:1},right:data.video_tapping?._frame_traces?.right||[],left:data.video_tapping?._frame_traces?.left||[]};
- let stored=false;try{if(window.NDBFrameStore){await window.NDBFrameStore.put(traceId,tracePayload);stored=true}}catch(e){console.warn('RC112 frame store video tapping',e)}
- data.video_tapping={...(data.video_tapping||{}),status:features.endpoint_usable?'completed':'completed_qc_rejected',model:'MediaPipe Hands · NDB VIDEO-TAP v10.2 RC112 adaptive hysteresis + evidence-preserving QC',duration_ms:DURATION,
+ let stored=false;try{if(window.NDBFrameStore){await window.NDBFrameStore.put(traceId,tracePayload);stored=true}}catch(e){console.warn('RC90 frame store video tapping',e)}
+ data.video_tapping={...(data.video_tapping||{}),status:features.endpoint_usable?'completed':'completed_qc_rejected',model:'MediaPipe Hands · NDB VIDEO-TAP v11.1 RC113 trial-adaptive + evidence SNR',duration_ms:DURATION,
  calibration:{method:'7 s per hand personal full-cycle calibration',right:sideCalibration.right,left:sideCalibration.left},
  camera_settings:{width:cameraSettings.width??null,height:cameraSettings.height??null,frameRate:cameraSettings.frameRate??null,facingMode:cameraSettings.facingMode??null},
  features,trace_ref:stored?traceId:null,trace_storage:stored?'indexeddb':'not_saved',trace_format:tracePayload.format,raw_video_saved:false};
@@ -5152,7 +5182,7 @@ async function finishVideo(){
 }
 async function activate(){try{E('vtapStart').disabled=true;E('vtapStatus').textContent='Attivazione fotocamera e tracking mano…';await ensureCamera();await ensureHands();E('vtapStatus').textContent='Fotocamera pronta. Mantieni una sola mano interamente visibile.';E('vtapStart').dataset.armed='1';uiForSide()}catch(e){E('vtapStatus').textContent=String(e?.message||e);E('vtapStart').disabled=false}}
 function skip(){stopCamera();data.video_tapping={status:'skipped_or_unavailable',model:'MediaPipe Hands · NDB VIDEO-TAP v9.1 RC102',duration_ms:DURATION,features:null};setTimeout(()=>{if(window.NDBCoreFlow?.active)window.NDBCoreFlow.after('tap_video');else if(typeof finish==='function')finish()},100)}
-function begin(){showPrimaryScreen('tapvideo');side='right';lastCenter=null;sideCalibration={right:null,left:null};sideResults={right:null,left:null};data.video_tapping={status:'started',model:'MediaPipe Hands · NDB VIDEO-TAP v10.2 RC112 · adaptive hysteresis + queued source frames + 21 landmarks',duration_ms:DURATION,right_series:[],left_series:[],right_trace3d:[],left_trace3d:[],features:null};uiForSide();E('vtapStatus').textContent='Premi ATTIVA FOTOCAMERA. Questa versione ricostruisce il ciclo completo dal segnale continuo; non usa Watchdog o confidence come veto.';const b=E('vtapStart');b.dataset.armed='0';b.onclick=()=>b.dataset.armed==='1'?startTrial():activate();E('vtapSkip').onclick=skip}
+function begin(){showPrimaryScreen('tapvideo');side='right';lastCenter=null;sideCalibration={right:null,left:null};sideResults={right:null,left:null};data.video_tapping={status:'started',model:'MediaPipe Hands · NDB VIDEO-TAP v10.1 RC111 · queued source frames + One-Euro + 21 landmarks',duration_ms:DURATION,right_series:[],left_series:[],right_trace3d:[],left_trace3d:[],features:null};uiForSide();E('vtapStatus').textContent='Premi ATTIVA FOTOCAMERA. Questa versione ricostruisce il ciclo completo dal segnale continuo; non usa Watchdog o confidence come veto.';const b=E('vtapStart');b.dataset.armed='0';b.onclick=()=>b.dataset.armed==='1'?startTrial():activate();E('vtapSkip').onclick=skip}
 window.addEventListener('pagehide',stopCamera);
 return{begin,skip,stopCamera,derive,detectCycles,buildCalibration,preprocess,compactVideoTrace,protocol:PROTOCOL,modelConfig:{maxNumHands:1,modelComplexity:1,minDetectionConfidence:.60,minTrackingConfidence:.60}};
 })();
@@ -5591,7 +5621,8 @@ async function ensureMic(){
  const track=speechStream.getAudioTracks?.()[0]||null,settings=track?.getSettings?.()||{};
  speechDeviceQC={sample_rate_requested_hz:48000,sample_rate_device_hz:Number.isFinite(Number(settings.sampleRate))?Number(settings.sampleRate):null,channel_count:Number.isFinite(Number(settings.channelCount))?Number(settings.channelCount):1,echo_cancellation:settings.echoCancellation??null,noise_suppression:settings.noiseSuppression??null,auto_gain_control:settings.autoGainControl??null,device_id_present:!!settings.deviceId};
  speechCtx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
- if(speechCtx.state==='suspended')await speechCtx.resume(); speechDeviceQC.audio_context_sample_rate_hz=speechCtx.sampleRate;
+ if(speechCtx.state==='suspended')await speechCtx.resume();
+ speechDeviceQC.audio_context_sample_rate_hz=speechCtx.sampleRate;
  speechSource=speechCtx.createMediaStreamSource(speechStream);
  speechProc=speechCtx.createScriptProcessor(2048,1,1);
  speechSink=speechCtx.createGain();speechSink.gain.value=0;
@@ -5961,8 +5992,7 @@ window.NDB_STIMULUS_QC=ndbStimulusQC();
 #ndbV71 .ndb-epi8-option:disabled{opacity:.62;transform:none!important}
 #ndbV71 .ndb-epi8-meta{border-left:3px solid #67c8c5;background:#f7fbfa;padding:12px;margin:13px 0;line-height:1.45}
 #ndbV71 .ndb-epi8-status{padding:10px 12px;border-radius:10px;background:#fff7e5;color:#6e5012;margin:12px 0}
-@media(max-width:540px){#ndbV71 .ndb-epi8-options{grid-template-columns:repeat(2,minmax(100px,1fr))}}
-</style>
+@media(max-width:540px){#ndbV71 .ndb-epi8-options{grid-template-columns:repeat(2,minmax(100px,1fr))}}</style>
 <script data-inlined-from="js/10-use-strict.js">
 (()=>{
 "use strict";
@@ -6390,7 +6420,8 @@ install();
 #ndbSelectiveDelete .ndb-delete-row{display:flex;gap:9px;align-items:end;flex-wrap:wrap}#ndbSelectiveDelete select{min-width:280px;max-width:100%}#ndbSelectiveDelete button{width:auto!important;margin:0!important;background:#8b3535!important}
 </style>
 <script data-inlined-from="js/13-use-strict.js">
-(()=>{"use strict";
+(()=>{
+"use strict";
 const $=id=>document.getElementById(id);
 function openLongitudinal(){
  const panel=$("ndbV71");if(!panel)return;
@@ -6960,8 +6991,7 @@ async function startVowel(){
    const r1=await fixedRecord(5000,'/a/ · mantieni tono e intensità naturali');vowelReps.push(analyzeSpeech(r1.samples,r1.sr,'vowel'));
    E('ndbSpeechPrompt').textContent='Ripetizione 2/2 · premi quando sei pronto';E('ndbSpeechMeter').textContent='PRONTO';E('ndbSpeechRecord').disabled=false;
    E('ndbSpeechRecord').onclick=async()=>{try{const r2=await fixedRecord(5000,'/a/ · seconda ripetizione');vowelReps.push(analyzeSpeech(r2.samples,r2.sr,'vowel'));finishVowel()}catch(e){const prompt=E('ndbSpeechPrompt');if(prompt)prompt.textContent=e.message;const record=E('ndbSpeechRecord');if(record)record.disabled=false}};
-  }catch(e){const prompt=E('ndbSpeechPrompt');if(prompt)prompt.textContent=e.message;const record=E('ndbSpeechRecord');if(record)record.disabled=false}
- };
+  }catch(e){const prompt=E('ndbSpeechPrompt');if(prompt)prompt.textContent=e.message;const record=E('ndbSpeechRecord');if(record)record.disabled=false} };
 }
 function finishVowel(){
  const keys=['duration_s','f0_median_hz','f0_cv_pct','jitter_frame_proxy_pct','shimmer_frame_proxy_pct','hnr_proxy_db','rms_dbfs_median','snr_proxy_db','clipping_pct','pitch_frames','voiced_fraction_pct','pause_ratio_pct'];
@@ -7190,6 +7220,7 @@ async function capture(ms,side){
  const start=performance.now(),cap={side,start,stopAt:start+ms,rows:[],attempted:0,tracked:0,source_frames_seen:0,processed_frames:0,software_dropped_frames:0,inference_errors:0,pending_jobs:0,snapshots_pending:0,queue_peak:0,last_media_time:NaN};
  activeCapture=cap;await new Promise(r=>setTimeout(r,ms));activeCapture=null;const deadline=performance.now()+15000;while(tfCapHasWork(cap)&&performance.now()<deadline)await new Promise(r=>setTimeout(r,12));return cap
 }
+
 function rowFromLocal(L,t,meta={}){
  if(!Array.isArray(L)||L.length<21)return null;
  const d={};for(const f of FINGERS)d[f]=dist([L[4].x,L[4].y,L[4].z],[L[TIP[f]].x,L[TIP[f]].y,L[TIP[f]].z]);
@@ -7959,8 +7990,7 @@ function installContextExtras(){
    if(!isResearcher()&&formIds.has(sec.id)){
      const p=fieldProgress(sec);if(p){const c=document.createElement('span');c.className='ndb47-chip ndb47-field-meter';c.style.setProperty('--p',p.pct+'%');c.innerHTML=`${p.filled}/${p.total} valorizzati <span></span>`;host.append(c)}
    }
-   if(isResearcher()){
-     const info=loadedRecordInfo();const c=document.createElement('span');c.className='ndb47-chip ndb47-record-chip';c.innerHTML=`<i></i>${info.rows} record · ${info.sets} dataset`;host.append(c)
+   if(isResearcher()){     const info=loadedRecordInfo();const c=document.createElement('span');c.className='ndb47-chip ndb47-record-chip';c.innerHTML=`<i></i>${info.rows} record · ${info.sets} dataset`;host.append(c)
      if(analysisIds.has(sec.id)&&!Q('.ndb47-print',bar)){
        const actions=Q('.ndb-context-actions',bar);if(actions){const b=document.createElement('button');b.type='button';b.className='secondary ndb47-print';b.textContent='STAMPA';b.title='Stampa o salva questa vista come PDF';b.onclick=()=>window.print();actions.append(b)}
      }
@@ -7988,7 +8018,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="ndbRC48FinalPolishScript">
 (function(){
  function polish(){
-  try{   // Accessible names/label associations without altering data flow.
+  try{
+   // Accessible names/label associations without altering data flow.
    document.querySelectorAll('label:not([for])').forEach(function(l){
     if(l.querySelector('input,select,textarea')) return;
     var n=l.nextElementSibling;
@@ -8369,7 +8400,7 @@ window.NDBRC56AugmentCatalog=ndbRC56AugmentCatalog;
  if(!x||typeof x!=='object')return x;
  const fam=x.familiarization_session===true||x.familiarization_active===true,
  qa=x.qa_mode===true||x.session_mode==='qa'||x.test_mode===true;
- if(qa)return{...x,measurement_valid_for_analysis:false,baseline_eligible:false,analysis_exclusion_reason:'qa_or_test_mode',qc_attestation:'qa_exclusion_rc112'};
+ if(qa)return{...x,measurement_valid_for_analysis:false,baseline_eligible:false,analysis_exclusion_reason:'qa_or_test_mode',qc_attestation:'qa_exclusion_rc111'};
  let attested=null;
  if(k==='NDB_cognitive_sessions'){
    const mode=String(x.session_mode||''),cv=x?.component_validity||{};
@@ -8380,22 +8411,22 @@ window.NDBRC56AugmentCatalog=ndbRC56AugmentCatalog;
  }
  if(attested===true){
    return{...x,measurement_valid_for_analysis:true,analysis_exclusion_reason:null,
-     baseline_eligible:!fam&&x.baseline_eligible===true,qc_attestation:'test_component_attested_rc112'}
+     baseline_eligible:!fam&&x.baseline_eligible===true,qc_attestation:'test_component_attested_rc111'}
  }
  if(attested===false){
    return{...x,measurement_valid_for_analysis:false,baseline_eligible:false,
-     analysis_exclusion_reason:x.analysis_exclusion_reason||'core_component_qc_failed',qc_attestation:'test_component_rejected_rc112'}
+     analysis_exclusion_reason:x.analysis_exclusion_reason||'core_component_qc_failed',qc_attestation:'test_component_rejected_rc111'}
  }
  // Once a test has explicitly assigned validity, the storage/sync layer preserves it.
  // It must not rerun a stricter second QC on a compacted record.
  if(typeof x.measurement_valid_for_analysis==='boolean'){
    return{...x,baseline_eligible:x.measurement_valid_for_analysis===true&&!fam&&x.baseline_eligible===true,
-     qc_attestation:x.qc_attestation||'preserved_test_level_rc112'}
+     qc_attestation:x.qc_attestation||'preserved_test_level_rc111'}
  }
  // Legacy records without an explicit validity flag remain visible but are never
  // promoted into the active baseline merely by this compatibility layer.
  return{...x,measurement_valid_for_analysis:true,baseline_eligible:false,
-   analysis_exclusion_reason:x.analysis_exclusion_reason||null,qc_attestation:'legacy_unattested_nonbaseline_rc112'}
+   analysis_exclusion_reason:x.analysis_exclusion_reason||null,qc_attestation:'legacy_unattested_nonbaseline_rc111'}
 }
 window.NDBRC56ValidateRecord=validRecord;
  const previousSet=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(this===localStorage&&['NDB_cognitive_sessions','NDB_trace_sessions','NDB_speech_sessions','NDB_visual_sessions','NDB_sleep_log','NDB_vitals_log','NDB_physical_log'].includes(String(k))){try{const parsed=JSON.parse(String(v));if(Array.isArray(parsed))v=JSON.stringify(parsed.map(x=>validRecord(String(k),x)))}catch(e){}}return previousSet.call(this,k,v)};
@@ -8787,7 +8818,8 @@ function readRows(k){
 }
 function flatten(o,p='',d=0,out={}){if(!o||typeof o!=='object'||Array.isArray(o)||d>7)return out;for(const [k,v] of Object.entries(o)){const q=p?p+'.'+k:k;if(SKIP_RX.test(q)||/(trace21|trace3d|raw_|events$|rejected_events|intervals_ms|series$|stimulus|history|camera_settings|template_summary|trajectory_summary)/i.test(q))continue;if(finite(v))out[q]=Number(v);else if(v&&typeof v==='object'&&!Array.isArray(v))flatten(v,q,d+1,out)}return out}
 
-function derivedLeaves(key,row){ const out={};
+function derivedLeaves(key,row){
+ const out={};
  if(key==='NDB_episodic_sessions'){
    if(Array.isArray(row?.immediate)){
      const c=row.immediate.reduce((s,x)=>s+(x?.word_correct?1:0)+(x?.place_correct?1:0),0);
@@ -8957,8 +8989,7 @@ function render(){const a=available(),m=a.find(x=>x.id===state.metric&&x.test===
 function bind(){E('mx100_kind').onchange=()=>{state.kind=E('mx100_kind').value;state.metric='';populate();render()};E('mx100_test').onchange=()=>{state.test=E('mx100_test').value;state.subtest='';state.metric='';populate();render()};E('mx100_subtest').onchange=()=>{state.subtest=E('mx100_subtest').value;state.metric='';populate();render()};E('mx100_metric').onchange=()=>{state.metric=E('mx100_metric').value;render()};E('mx100_view').onchange=()=>{state.view=E('mx100_view').value;render()};E('mx100_scope').onchange=()=>{state.scope=E('mx100_scope').value;render()};E('mx100_refresh').onclick=async()=>{const uid=document.getElementById('ndbParticipantSelect')?.value;if(window.NDB_PORTAL_ROLE==='researcher'&&uid&&typeof window.ndbLoadParticipantRC56==='function'){E('mx100_build').textContent='Aggiornamento Supabase…';await window.ndbLoadParticipantRC56(uid,'explorer',false)}else{invalidateAll();populate();render()}};E('mx100_close').onclick=closeExplorer;E('mx100_chart').onclick=e=>{const c=E('mx100_chart'),rc=c.getBoundingClientRect(),x=e.clientX-rc.left,y=e.clientY-rc.top;if(!lastPlot.length)return;let best=lastPlot[0],bd=Infinity;for(const p of lastPlot){const d=(p.px-x)**2+(p.py-y)**2;if(d<bd){bd=d;best=p}}E('mx100_point').textContent=`${best.full} · ${fmt(best.value,3)}`}}
 function openExplorer(test=null){const fresh=catalog();if(test&&fresh.structure.some(x=>x[0]===test)){state.test=test;state.subtest='';state.metric=''}document.body.classList.add('ndb-mx100-route');try{hideAll?.()}catch(e){}const s=E('metricexplorer');s?.classList.remove('hidden');s?.removeAttribute('aria-hidden');if(!E('mx100_test')?.dataset.bound){bind();E('mx100_test').dataset.bound='1'}if(location.hash!==ROUTE)history.pushState({ndb:'metricexplorer'},'',ROUTE);populate();render();scrollTo(0,0)}
 function closeExplorer(){document.body.classList.remove('ndb-mx100-route');const s=E('metricexplorer');s?.classList.add('hidden');s?.setAttribute('aria-hidden','true');if(location.hash===ROUTE)history.pushState({},'',location.pathname+location.search);try{openDashboard?.()}catch(e){try{goHome?.()}catch(_){}}}
-function invalidateKey(key){if(DATA_KEYS.includes(key)){invalidKeys.add(key);dirty=true;cache=null;window.NDBDataHubRC107?.invalidateKey?.(key)}}
-function invalidateAll(){invalidKeys=new Set(DATA_KEYS);dirty=true;cache=null;keyIndex.clear();window.NDBDataHubRC107?.invalidateAll?.()}
+function invalidateKey(key){if(DATA_KEYS.includes(key)){invalidKeys.add(key);dirty=true;cache=null;window.NDBDataHubRC107?.invalidateKey?.(key)}}function invalidateAll(){invalidKeys=new Set(DATA_KEYS);dirty=true;cache=null;keyIndex.clear();window.NDBDataHubRC107?.invalidateAll?.()}
 function invalidate(){invalidateAll()}
 window.openMetricExplorer=(test=null)=>openExplorer(test);
 window.NDBMetricExplorerRC107={open:openExplorer,close:closeExplorer,build:()=>buildCatalog(),catalog:()=>catalog().metrics,coverage:()=>catalog().coverage,counts:()=>catalog().counts,structure:TESTS,baseline,readRows,invalidate,invalidateKey,invalidateAll,state,perf:()=>({revision:catalogRevision,invalid:[...invalidKeys],build_ms:catalog()?.build_ms||0,metrics:catalog()?.metrics?.length||0,datahub:window.NDBDataHubRC107?.diagnostics?.()})};
@@ -9280,8 +9311,6 @@ window.NDBRC108RunSourceAudit=run;setTimeout(run,950);
 <script id="ndbRC110StandaloneMetricsNav">
 (()=>{window.openMetricExplorer=function(test=null){const q=new URLSearchParams();if(test)q.set('test',test);location.href='metrics.html'+(q.toString()?'?'+q.toString():'')};})();
 </script>
-<script id="ndbRC112Release">window.NDB_RELEASE='RC112';window.NDB_VERSION='NDB-RC112';window.NDB_VERSION_PARTICIPANT='NDB-RC112';</script>
-
 <script id="ndbRC111LegacyTappingRecovery">
 (()=>{
 'use strict';
@@ -9306,5 +9335,6 @@ try{
 })();
 </script>
 
+<script id="ndbRC113Release">window.NDB_RELEASE='RC113';window.NDB_VERSION='NDB-RC113';window.NDB_VERSION_PARTICIPANT='NDB-RC113';</script>
 </body>
 </html>
